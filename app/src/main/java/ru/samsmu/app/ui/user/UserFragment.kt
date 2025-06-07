@@ -8,6 +8,7 @@
 
 package ru.samsmu.app.ui.user
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,17 +18,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
-import ru.samsmu.app.databinding.FragmentHomeBinding
+import ru.samsmu.app.databinding.FragmentUsersListBinding
 
 class UserFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentUsersListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var users: List<User>? = ArrayList()
+    private lateinit var userListAdapter : UserListAdapter
+
+    private var users: List<User> = ArrayList()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        userListAdapter = UserListAdapter(users)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +44,11 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentUsersListBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val recyclerView = binding.recyclerUserListView
+        recyclerView.adapter = userListAdapter
 
         return root
     }
@@ -46,6 +58,7 @@ class UserFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun loadUsers(){
         val userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
@@ -55,7 +68,8 @@ class UserFragment : Fragment() {
                     Status.SUCCESS -> {
                         //todo hide progress bar
                         it.data.let { data ->
-                            users = data
+                            users = data!!
+                            userListAdapter.notifyDataSetChanged()
                         }
                     }
 

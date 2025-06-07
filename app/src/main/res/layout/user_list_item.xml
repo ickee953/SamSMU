@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height">
+
+    <RelativeLayout
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin"
+            android:layout_marginStart="@dimen/content_margin_min"
+            android:layout_marginEnd="@dimen/details_content_margin_right"
+            android:lines="1" />
+
+        <!--<TextView
+            android:id="@+id/second_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="@dimen/content_margin_min"
+            android:layout_marginStart="@dimen/content_margin_min"
+            android:layout_marginEnd="@dimen/details_content_margin_right"
+            android:lines="2"/>-->
+
+    </RelativeLayout>
+
+    <!-- just a divider -->
+    <View android:background="@android:color/darker_gray"
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

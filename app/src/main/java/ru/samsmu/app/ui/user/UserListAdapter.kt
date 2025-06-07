@@ -1,0 +1,43 @@
+/**
+ * © Panov Vitaly 2025 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Panov Vitaly 7 Jun 2025
+ */
+
+package ru.samsmu.app.ui.user
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import ru.samsmu.app.data.model.User
+import androidx.recyclerview.widget.RecyclerView
+import ru.samsmu.app.R
+
+class UserListAdapter(private val users: List<User>):
+    RecyclerView.Adapter<UserListAdapter.ItemViewHolder>() {
+
+    inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        var nameTextView: TextView = view.findViewById(R.id.name)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
+
+        return ItemViewHolder(userView)
+    }
+
+    override fun getItemCount(): Int {
+        return users.size
+    }
+
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val user = users[position]
+
+        holder.nameTextView.text = user.firstName
+    }
+
+
+}

@@ -6,18 +6,19 @@
  * Written by Panov Vitaly 7 Jun 2025
  */
 
-package ru.samsmu.app.ui.home
+package ru.samsmu.app.ui.user
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import kotlinx.coroutines.Dispatchers
+import ru.samsmu.app.data.Resource
 import ru.samsmu.app.data.repository.UserRepository
 import ru.samsmu.app.data.api.ApiHelper
 import ru.samsmu.app.data.api.RetrofitBuilder
+import ru.samsmu.app.data.model.User
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
         const val DEFAULT_ERR_MSG = "Error Occured!"
@@ -25,14 +26,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: UserRepository = UserRepository( ApiHelper( RetrofitBuilder.apiService ) )
 
-    /*fun getUsers() = livaData (Dispatchers.IO) {
+    fun getUsers() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
-        val items = null
+        var items: List<User> = ArrayList()
         try {
             items = repository.getUsers()
             emit(Resource.success(data = items))
-        } catch( e: Exceeption ) {
+        } catch( e: Exception ) {
             emit(Resource.error(data = items, message = e.message ?: DEFAULT_ERR_MSG))
         }
-    }*/
+    }
+
+    fun getFavorites() = liveData (Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+    }
 }

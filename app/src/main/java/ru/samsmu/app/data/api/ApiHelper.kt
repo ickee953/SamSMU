@@ -8,11 +8,8 @@
 
 package ru.samsmu.app.data.api
 
-import retrofit2.http.GET
+class ApiHelper( private val apiService: ApiService ) {
 
-interface ApiService {
-
-    @GET("/users")
-    suspend fun getUsers(): List<Any?>
+    suspend fun getUsers() = apiService.getUsers()
 
 }

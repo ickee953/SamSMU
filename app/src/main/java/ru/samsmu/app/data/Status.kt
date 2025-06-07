@@ -6,13 +6,10 @@
  * Written by Panov Vitaly 7 Jun 2025
  */
 
-package ru.samsmu.app.data.api
+package ru.samsmu.app.data
 
-import retrofit2.http.GET
-
-interface ApiService {
-
-    @GET("/users")
-    suspend fun getUsers(): List<Any?>
-
+enum class Status {
+    SUCCESS,
+    ERROR,
+    LOADING
 }

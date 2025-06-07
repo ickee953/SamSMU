@@ -6,13 +6,12 @@
  * Written by Panov Vitaly 7 Jun 2025
  */
 
-package ru.samsmu.app.data.api
+package ru.samsmu.app.data.repository
 
-import retrofit2.http.GET
+import ru.samsmu.app.data.api.ApiHelper
 
-interface ApiService {
+class UserRepository( private val apiHelper: ApiHelper ) {
 
-    @GET("/users")
-    suspend fun getUsers(): List<Any?>
+    suspend fun getUsers() = apiHelper.getUsers()
 
 }

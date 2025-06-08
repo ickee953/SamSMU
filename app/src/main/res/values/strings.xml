@@ -2,4 +2,8 @@
     <string name="app_name">SamsmuApp</string>
     <string name="title_users">Пользователи</string>
     <string name="title_favorite">Избранное</string>
+    <string name="action_muscules">Группы мышц</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_exit">Выход</string>
+    <string name="save">Сохранить</string>
 </resources>

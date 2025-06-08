@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  © Panov Vitaly 2025 - All Rights Reserved
+
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Panov Vitaly 8 May 2025
+-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MusclesActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:name="ru.samsmu.app.ui.MusclesFragment"
+        android:id="@+id/login_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

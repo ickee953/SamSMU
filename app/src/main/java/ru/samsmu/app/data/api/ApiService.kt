@@ -9,11 +9,11 @@
 package ru.samsmu.app.data.api
 
 import retrofit2.http.GET
-import ru.samsmu.app.data.model.User
+import ru.samsmu.app.data.model.UsersList
 
 interface ApiService {
 
     @GET("/users")
-    suspend fun getUsers(): List<User>
+    suspend fun getUsersList(): UsersList
 
 }

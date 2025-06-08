@@ -12,6 +12,6 @@ import ru.samsmu.app.data.api.ApiHelper
 
 class UserRepository( private val apiHelper: ApiHelper ) {
 
-    suspend fun getUsers() = apiHelper.getUsers()
+    suspend fun getUsersList() = apiHelper.getUsersList()
 
 }

@@ -8,6 +8,7 @@
 
 package ru.samsmu.app.ui.user
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,9 @@ import android.widget.TextView
 import ru.samsmu.app.data.model.User
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.R
+import java.util.LinkedList
 
-class UserListAdapter(private val users: List<User>):
+class UserListAdapter(private val users: MutableList<User>):
     RecyclerView.Adapter<UserListAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -39,5 +41,13 @@ class UserListAdapter(private val users: List<User>):
         holder.nameTextView.text = user.firstName
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun reloadUsers(dataset: List<User>?) {
+        if(dataset != null){
+            users.clear()
+            users.addAll(dataset)
+            notifyDataSetChanged()
+        }
+    }
 
 }

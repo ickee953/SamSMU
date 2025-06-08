@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersListBinding
+import java.util.LinkedList
 
 class UserFragment : Fragment() {
 
@@ -30,7 +31,7 @@ class UserFragment : Fragment() {
 
     private lateinit var userListAdapter : UserListAdapter
 
-    private var users: List<User> = ArrayList()
+    private var users: MutableList<User> = LinkedList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,12 @@ class UserFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        loadUsers()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -60,16 +67,17 @@ class UserFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadUsers(){
+
         val userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
+        //todo show progress bar
         userViewModel.getUsers().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
                     Status.SUCCESS -> {
                         //todo hide progress bar
                         it.data.let { data ->
-                            users = data!!
-                            userListAdapter.notifyDataSetChanged()
+                            userListAdapter.reloadUsers(data!!)
                         }
                     }
 

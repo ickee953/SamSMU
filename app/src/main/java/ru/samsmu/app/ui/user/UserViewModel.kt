@@ -17,6 +17,7 @@ import ru.samsmu.app.data.repository.UserRepository
 import ru.samsmu.app.data.api.ApiHelper
 import ru.samsmu.app.data.api.RetrofitBuilder
 import ru.samsmu.app.data.model.User
+import ru.samsmu.app.data.model.UsersList
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,12 +29,12 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getUsers() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
-        var items: List<User> = ArrayList()
         try {
-            items = repository.getUsers()
-            emit(Resource.success(data = items))
+            val usersListResponse: UsersList = repository.getUsersList()
+            val users: List<User>? = usersListResponse.users
+            emit(Resource.success(data = users))
         } catch( e: Exception ) {
-            emit(Resource.error(data = items, message = e.message ?: DEFAULT_ERR_MSG))
+            emit(Resource.error(data = null, message = e.message ?: DEFAULT_ERR_MSG))
         }
     }
 

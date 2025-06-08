@@ -3,17 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_list_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_user_list_view"
-        android:name="com.online.myapplication.ItemListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.online.myapplication.ItemDetailHostActivity"
         tools:listitem="@layout/user_list_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

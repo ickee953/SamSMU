@@ -16,13 +16,25 @@ import android.widget.TextView
 import ru.samsmu.app.data.model.User
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.R
-import java.util.LinkedList
+import android.widget.ImageView
+import coil.ImageLoader
+import coil.load
+import coil.request.CachePolicy
+import coil.transform.RoundedCornersTransformation
 
 class UserListAdapter(private val users: MutableList<User>):
     RecyclerView.Adapter<UserListAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        var nameTextView: TextView = view.findViewById(R.id.name)
+        var nameTextView: TextView  = view.findViewById(R.id.name)
+        var emailTextView: TextView = view.findViewById(R.id.email)
+        var imageView: ImageView    = view.findViewById(R.id.image_view)
+
+        val imageLoader = ImageLoader.Builder(view.context)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .respectCacheHeaders(false)
+            .build()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -35,10 +47,22 @@ class UserListAdapter(private val users: MutableList<User>):
         return users.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val user = users[position]
 
-        holder.nameTextView.text = user.firstName
+        holder.nameTextView.text    = "${user.firstName} ${user.lastName} ${user.maidenName}"
+        holder.emailTextView.text   = user.email
+
+        if( user.image != null && user.image != ""){
+            holder.imageView.load( user.image, holder.imageLoader ){
+                transformations(RoundedCornersTransformation(25F))
+            }
+        } else {
+            holder.imageView.load(R.drawable.baseline_person_24){
+                transformations(RoundedCornersTransformation(25F))
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

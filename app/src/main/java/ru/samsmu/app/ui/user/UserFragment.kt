@@ -29,6 +29,8 @@ class UserFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var userViewModel : UserViewModel
+
     private lateinit var userListAdapter : UserListAdapter
 
     private var users: MutableList<User> = LinkedList()
@@ -36,7 +38,13 @@ class UserFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        userListAdapter = UserListAdapter(users)
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+
+        userListAdapter = UserListAdapter(users,{
+            Toast.makeText(requireActivity(), "On user clicked", Toast.LENGTH_LONG).show()
+        },{
+            Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateView(
@@ -67,8 +75,6 @@ class UserFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadUsers(){
-
-        val userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         //todo show progress bar
         userViewModel.getUsers().observe(viewLifecycleOwner){ resource ->

@@ -8,6 +8,8 @@
 
 package ru.samsmu.app.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -17,4 +19,38 @@ data class User(
     @SerializedName("maidenName") var maidenName: String?,
     @SerializedName("email") var email: String?,
     @SerializedName("image") var image: String?
-)
+) : Parcelable {
+
+    constructor(parcel : Parcel) : this(
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    )
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeLong(id)
+        dest.writeString(firstName)
+        dest.writeString(lastName)
+        dest.writeString(maidenName)
+        dest.writeString(email)
+        dest.writeString(image)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<User> {
+        override fun createFromParcel(parcel: Parcel): User {
+            return User(parcel)
+        }
+
+        override fun newArray(size: Int): Array<User?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+}

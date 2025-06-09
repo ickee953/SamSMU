@@ -1,11 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "ru.samsmu.app"
     compileSdk = 35
+
+    room {
+        schemaDirectory("$projectDir/src/main/assets/schemas")
+    }
 
     defaultConfig {
         applicationId = "ru.samsmu.app"
@@ -56,6 +62,11 @@ dependencies {
     implementation(libs.com.squareup.okhttp3)
 
     implementation(libs.io.coil.kt)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

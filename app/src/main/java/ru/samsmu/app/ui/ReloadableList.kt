@@ -1,6 +1,12 @@
-package ru.samsmu.app.ui
+/**
+ * © Panov Vitaly 2025 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Panov Vitaly 9 Jun 2025
+ */
 
-import ru.samsmu.app.data.model.User
+package ru.samsmu.app.ui
 
 interface ReloadableList<T> {
 

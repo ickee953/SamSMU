@@ -12,6 +12,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import android.widget.TextView
 import android.widget.ToggleButton
 import ru.samsmu.app.data.model.User
@@ -23,8 +24,16 @@ import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import ru.samsmu.app.ui.ReloadableList
+import ru.samsmu.app.data.Status
+import ru.samsmu.app.data.db.UserDao
+import ru.samsmu.app.data.db.SamSmuDB
+import android.app.Application
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class UsersListAdapter(
+    private val application: Application,
     private val users: MutableList<User>,
     private val userViewModel: UserViewModel,
     private val onClickListener: View.OnClickListener
@@ -73,8 +82,11 @@ class UsersListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favoriteBtn.setOnClickListener { button ->
-            userViewModel.addFavorite( user )
+        holder.favoriteBtn.setOnClickListener {
+            GlobalScope.launch {
+                val userDao: UserDao = SamSmuDB.getDatabase(application).userDao()
+                userDao.create(user)
+            }
         }
     }
 

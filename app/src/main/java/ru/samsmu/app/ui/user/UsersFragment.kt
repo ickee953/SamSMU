@@ -31,7 +31,6 @@ class UsersFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +61,7 @@ class UsersFragment : Fragment() {
                         it.data.let { data ->
 
                             val usersListAdapter = UsersListAdapter(
+                                requireActivity().application,
                                 data!! as ArrayList<User>,
                                 userViewModel
                             ) { itemView ->

@@ -43,6 +43,8 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getFavorites() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
+        val favorites = userDao.favorites()
+        emit(Resource.success(data = favorites))
     }
 
     fun addFavorite( user: User ) = liveData (Dispatchers.IO) {

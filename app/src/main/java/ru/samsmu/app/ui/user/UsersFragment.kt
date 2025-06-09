@@ -1,11 +1,3 @@
-/**
- * © Panov Vitaly 2025 - All Rights Reserved
- *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Panov Vitaly 7 Jun 2025
- */
-
 package ru.samsmu.app.ui.user
 
 import android.annotation.SuppressLint
@@ -15,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
-import ru.samsmu.app.databinding.FragmentUsersListBinding
-import java.util.LinkedList
+import ru.samsmu.app.databinding.FragmentUsersBinding
+import ru.samsmu.app.R
 
-class UserFragment : Fragment() {
+class UsersFragment : Fragment() {
 
-    private var _binding: FragmentUsersListBinding? = null
+    private var _binding: FragmentUsersBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,21 +24,12 @@ class UserFragment : Fragment() {
 
     private lateinit var userViewModel : UserViewModel
 
-    private lateinit var userListAdapter : UserListAdapter
-
-    private var users: MutableList<User> = LinkedList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-
-        userListAdapter = UserListAdapter(users,{
-            Toast.makeText(requireActivity(), "On user clicked", Toast.LENGTH_LONG).show()
-        },{
-            Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
-        })
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,24 +37,16 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentUsersListBinding.inflate(inflater, container, false)
+        _binding = FragmentUsersBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val recyclerView = binding.recyclerUserListView
-        recyclerView.adapter = userListAdapter
 
         return root
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
 
         loadUsers()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -83,7 +59,21 @@ class UserFragment : Fragment() {
                     Status.SUCCESS -> {
                         //todo hide progress bar
                         it.data.let { data ->
-                            userListAdapter.reloadUsers(data!!)
+
+                            val usersListAdapter = UserListAdapter(data!! as ArrayList<User>,{
+                                Toast.makeText(requireActivity(), "On user clicked", Toast.LENGTH_LONG).show()
+                            },{
+                                Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
+                            })
+
+                            val usersListFragment = UsersListFragment.getInstance(usersListAdapter)
+
+                            val transaction: FragmentTransaction
+                                = requireActivity().supportFragmentManager.beginTransaction()
+
+                            transaction.replace(R.id.users_list_fragment, usersListFragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
                         }
                     }
 

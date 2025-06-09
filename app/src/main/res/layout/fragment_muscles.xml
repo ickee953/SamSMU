@@ -14,7 +14,7 @@
     android:layout_height="match_parent"
     tools:ignore="HardcodedText">
 
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -26,6 +26,6 @@
             android:layout_height="wrap_content"
             android:text="@string/save" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
 </RelativeLayout>

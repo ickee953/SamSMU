@@ -3,30 +3,59 @@
  *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Panov Vitaly 8 Jun 2025
+ * Written by Panov Vitaly 7 Jun 2025
  */
 
 package ru.samsmu.app.ui.user
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.samsmu.app.data.model.User
+import ru.samsmu.app.databinding.FragmentUsersListBinding
 
 class UsersListFragment : Fragment() {
 
-    private lateinit var usersAdapter: UserListAdapter
-
     companion object {
-        const val ARG_USERS = "users"
 
-        fun getInstance( users: ArrayList<User>? ): Fragment{
-            val bundle = Bundle()
-            bundle.putParcelableArrayList( ARG_USERS, users )
+        fun getInstance( usersListAdapter: UserListAdapter): Fragment{
             val fragment = UsersListFragment()
-            fragment.arguments = bundle
+            fragment.usersListAdapter = usersListAdapter
 
             return fragment
         }
+    }
+
+    private var _binding: FragmentUsersListBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    private var usersListAdapter : UserListAdapter? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentUsersListBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if( usersListAdapter != null ) binding.recyclerUserListView.adapter = usersListAdapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

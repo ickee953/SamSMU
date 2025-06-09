@@ -16,7 +16,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:name="ru.samsmu.app.ui.MusclesFragment"
-        android:id="@+id/login_fragment"
+        android:id="@+id/muscles_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -27,7 +27,7 @@ class UsersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
     }
 
 
@@ -60,7 +60,7 @@ class UsersFragment : Fragment() {
                         //todo hide progress bar
                         it.data.let { data ->
 
-                            val usersListAdapter = UserListAdapter(data!! as ArrayList<User>,{
+                            val usersListAdapter = UsersListAdapter(data!! as ArrayList<User>,{
                                 Toast.makeText(requireActivity(), "On user clicked", Toast.LENGTH_LONG).show()
                             },{
                                 Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
@@ -71,9 +71,9 @@ class UsersFragment : Fragment() {
                             val transaction: FragmentTransaction
                                 = requireActivity().supportFragmentManager.beginTransaction()
 
-                            transaction.replace(R.id.users_list_fragment, usersListFragment);
-                            transaction.addToBackStack(null);
-                            transaction.commit();
+                            transaction.replace(R.id.users_list_fragment, usersListFragment)
+                            transaction.addToBackStack(null)
+                            transaction.commit()
                         }
                     }
 

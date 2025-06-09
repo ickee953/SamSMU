@@ -3,37 +3,36 @@
  *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Panov Vitaly 7 Jun 2025
+ * Written by Panov Vitaly 9 Jun 2025
  */
 
-package ru.samsmu.app.ui.user
+package ru.samsmu.app.ui.favorite
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.ToggleButton
-import ru.samsmu.app.data.model.User
-import androidx.recyclerview.widget.RecyclerView
-import ru.samsmu.app.R
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
+import ru.samsmu.app.R
+import ru.samsmu.app.data.model.User
+import ru.samsmu.app.ui.ReloadableList
+import ru.samsmu.app.ui.favorite.FavoritesListAdapter
 
-class UserListAdapter(
+class FavoritesListAdapter(
     private val users: MutableList<User>,
-    private val onClickListener: View.OnClickListener,
-    private val favoriteClickListener: View.OnClickListener
-): RecyclerView.Adapter<UserListAdapter.ItemViewHolder>() {
+    private val onClickListener: View.OnClickListener
+): RecyclerView.Adapter<FavoritesListAdapter.ItemViewHolder>(), ReloadableList<User> {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        var nameTextView: TextView      = view.findViewById(R.id.name)
-        var emailTextView: TextView     = view.findViewById(R.id.email)
-        var imageView: ImageView        = view.findViewById(R.id.image_view)
-        var favoriteBtn: ToggleButton   = view.findViewById(R.id.favorite_btn)
+        var nameTextView: TextView = view.findViewById(R.id.name)
+        var emailTextView: TextView = view.findViewById(R.id.email)
+        var imageView: ImageView = view.findViewById(R.id.image_view)
 
         val imageLoader = ImageLoader.Builder(view.context)
             .memoryCachePolicy(CachePolicy.ENABLED)
@@ -72,11 +71,10 @@ class UserListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favoriteBtn.setOnClickListener(favoriteClickListener)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun reloadUsers(dataset: List<User>?) {
+    override fun reloadUsers(dataset: List<User>?) {
         if(dataset != null){
             users.clear()
             users.addAll(dataset)

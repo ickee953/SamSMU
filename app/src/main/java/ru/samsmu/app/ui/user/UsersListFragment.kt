@@ -19,7 +19,7 @@ class UsersListFragment : Fragment() {
 
     companion object {
 
-        fun getInstance( usersListAdapter: UserListAdapter): Fragment{
+        fun getInstance( usersListAdapter: UsersListAdapter): Fragment{
             val fragment = UsersListFragment()
             fragment.usersListAdapter = usersListAdapter
 
@@ -33,7 +33,7 @@ class UsersListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var usersListAdapter : UserListAdapter? = null
+    private var usersListAdapter : UsersListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

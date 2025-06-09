@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
@@ -60,8 +61,14 @@ class UsersFragment : Fragment() {
                         //todo hide progress bar
                         it.data.let { data ->
 
-                            val usersListAdapter = UsersListAdapter(data!! as ArrayList<User>,{
-                                Toast.makeText(requireActivity(), "On user clicked", Toast.LENGTH_LONG).show()
+                            val usersListAdapter = UsersListAdapter(data!! as ArrayList<User>, { itemView ->
+                                val user = itemView.tag as User
+                                val bundle = Bundle()
+                                bundle.putParcelable(
+                                    UserDetailsFragment.ARG_USER,
+                                    user
+                                )
+                                itemView.findNavController().navigate(R.id.show_user_details, bundle)
                             },{
                                 Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
                             })

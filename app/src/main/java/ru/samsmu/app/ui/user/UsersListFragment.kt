@@ -13,13 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.databinding.FragmentUsersListBinding
 
 class UsersListFragment : Fragment() {
 
     companion object {
 
-        fun getInstance( usersListAdapter: UsersListAdapter): Fragment{
+        fun getInstance( usersListAdapter: RecyclerView.Adapter<*>): Fragment{
             val fragment = UsersListFragment()
             fragment.usersListAdapter = usersListAdapter
 
@@ -33,7 +34,7 @@ class UsersListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var usersListAdapter : UsersListAdapter? = null
+    private var usersListAdapter : RecyclerView.Adapter<*>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

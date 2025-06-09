@@ -62,8 +62,7 @@ class UsersFragment : Fragment() {
 
                             val usersListAdapter = UsersListAdapter(
                                 requireActivity().application,
-                                data!! as ArrayList<User>,
-                                userViewModel
+                                data!! as ArrayList<User>
                             ) { itemView ->
                                 val user = itemView.tag as User
                                 val bundle = Bundle()

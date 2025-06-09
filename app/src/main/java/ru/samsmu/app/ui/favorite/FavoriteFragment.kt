@@ -14,7 +14,7 @@ import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.user.UserDetailsFragment
 import ru.samsmu.app.ui.user.UsersListFragment
-import ru.samsmu.app.ui.user.UsersListAdapter
+import ru.samsmu.app.ui.favorite.FavoritesListAdapter
 import androidx.navigation.findNavController
 import ru.samsmu.app.databinding.FragmentFavoriteBinding
 import ru.samsmu.app.R
@@ -69,10 +69,8 @@ class FavoriteFragment : Fragment() {
                         //todo hide progress bar
                         it.data.let { data ->
 
-                            val usersListAdapter = UsersListAdapter(
-                                requireActivity().application,
-                                data!! as ArrayList<User>,
-                                userViewModel
+                            val usersListAdapter = FavoritesListAdapter(
+                                data!! as ArrayList<User>
                             ) { itemView ->
                                 val user = itemView.tag as User
                                 val bundle = Bundle()

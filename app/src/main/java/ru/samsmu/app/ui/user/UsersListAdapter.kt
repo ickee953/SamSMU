@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 class UsersListAdapter(
     private val application: Application,
     private val users: MutableList<User>,
-    private val userViewModel: UserViewModel,
     private val onClickListener: View.OnClickListener
 ): RecyclerView.Adapter<UsersListAdapter.ItemViewHolder>(), ReloadableList<User> {
 

@@ -10,15 +10,23 @@ package ru.samsmu.app.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(
+    tableName = "user",
+    indices = [Index(value = ["id"], unique = true)]
+)
 data class User(
-    @SerializedName("id") var id: Long,
-    @SerializedName("firstName") var firstName: String?,
-    @SerializedName("lastName") var lastName: String?,
-    @SerializedName("maidenName") var maidenName: String?,
-    @SerializedName("email") var email: String?,
-    @SerializedName("image") var image: String?
+    @SerializedName("id") @PrimaryKey @ColumnInfo(name = "id") var id: Long,
+    @SerializedName("firstName") @ColumnInfo(name = "firstName") var firstName: String?,
+    @SerializedName("lastName") @ColumnInfo(name = "lastName") var lastName: String?,
+    @SerializedName("maidenName") @ColumnInfo(name = "maidenName") var maidenName: String?,
+    @SerializedName("email") @ColumnInfo(name = "email") var email: String?,
+    @SerializedName("image") @ColumnInfo(name = "image") var image: String?
 ) : Parcelable {
 
     constructor(parcel : Parcel) : this(

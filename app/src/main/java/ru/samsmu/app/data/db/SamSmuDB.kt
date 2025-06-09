@@ -9,9 +9,15 @@
 package ru.samsmu.app.data.db
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import ru.samsmu.app.data.model.User
 
+@Database(
+    version = 1,
+    entities = [User::class]
+)
 abstract class SamSmuDB : RoomDatabase() {
 
     companion object {

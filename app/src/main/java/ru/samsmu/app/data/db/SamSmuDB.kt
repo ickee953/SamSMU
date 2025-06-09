@@ -20,6 +20,8 @@ import ru.samsmu.app.data.model.User
 )
 abstract class SamSmuDB : RoomDatabase() {
 
+    abstract fun userDao(): UserDao
+
     companion object {
         private var INSTANCE: SamSmuDB? = null
         private const val DB_NAME = "samsmu_db.db"

@@ -16,6 +16,8 @@ import ru.samsmu.app.data.Resource
 import ru.samsmu.app.data.repository.UserRepository
 import ru.samsmu.app.data.api.ApiHelper
 import ru.samsmu.app.data.api.RetrofitBuilder
+import ru.samsmu.app.data.db.SamSmuDB
+import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.data.model.UsersList
 
@@ -26,6 +28,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val repository: UserRepository = UserRepository( ApiHelper( RetrofitBuilder.apiService ) )
+    private val userDao: UserDao = SamSmuDB.getDatabase( application ).userDao()
 
     fun getUsers() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
@@ -40,5 +43,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getFavorites() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
+    }
+
+    fun addFavorite( user: User ) = liveData (Dispatchers.IO) {
+        userDao.create(user)
+        emit(Resource.success(data = user))
     }
 }

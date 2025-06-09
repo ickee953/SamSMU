@@ -26,8 +26,8 @@ import ru.samsmu.app.ui.ReloadableList
 
 class UsersListAdapter(
     private val users: MutableList<User>,
-    private val onClickListener: View.OnClickListener,
-    private val favoriteClickListener: View.OnClickListener
+    private val userViewModel: UserViewModel,
+    private val onClickListener: View.OnClickListener
 ): RecyclerView.Adapter<UsersListAdapter.ItemViewHolder>(), ReloadableList<User> {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -73,7 +73,9 @@ class UsersListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favoriteBtn.setOnClickListener(favoriteClickListener)
+        holder.favoriteBtn.setOnClickListener { button ->
+            userViewModel.addFavorite( user )
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

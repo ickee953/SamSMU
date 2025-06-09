@@ -61,17 +61,19 @@ class UsersFragment : Fragment() {
                         //todo hide progress bar
                         it.data.let { data ->
 
-                            val usersListAdapter = UsersListAdapter(data!! as ArrayList<User>, { itemView ->
+                            val usersListAdapter = UsersListAdapter(
+                                data!! as ArrayList<User>,
+                                userViewModel
+                            ) { itemView ->
                                 val user = itemView.tag as User
                                 val bundle = Bundle()
                                 bundle.putParcelable(
                                     UserDetailsFragment.ARG_USER,
                                     user
                                 )
-                                itemView.findNavController().navigate(R.id.show_user_details, bundle)
-                            },{
-                                Toast.makeText(requireActivity(), "Toggle favorite clicked", Toast.LENGTH_LONG).show()
-                            })
+                                itemView.findNavController()
+                                    .navigate(R.id.show_user_details, bundle)
+                            }
 
                             val usersListFragment = UsersListFragment.getInstance(usersListAdapter)
 

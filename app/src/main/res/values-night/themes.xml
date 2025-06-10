@@ -12,5 +12,14 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionBarTheme">@style/AppActionBarTheme</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="AppActionBarTheme">
+        <item name="android:elevation">0sp</item>
+        <item name="elevation">0sp</item>
     </style>
 </resources>

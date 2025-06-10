@@ -16,6 +16,7 @@ import ru.samsmu.app.ui.user.UserDetailsFragment
 import ru.samsmu.app.ui.user.UsersListFragment
 import ru.samsmu.app.ui.favorite.FavoritesListAdapter
 import androidx.navigation.findNavController
+import ru.samsmu.app.MainActivity
 import ru.samsmu.app.databinding.FragmentFavoriteBinding
 import ru.samsmu.app.R
 
@@ -45,6 +46,12 @@ class FavoriteFragment : Fragment() {
         val root: View = binding.root
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //(activity as MainActivity).setSupportActionBar(binding.toolbar)
     }
 
     override fun onResume(){

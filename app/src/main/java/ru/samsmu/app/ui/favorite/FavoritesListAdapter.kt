@@ -14,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.ToggleButton
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.load
@@ -34,7 +34,7 @@ class FavoritesListAdapter(
         var nameTextView: TextView = view.findViewById(R.id.name)
         var emailTextView: TextView = view.findViewById(R.id.email)
         var imageView: ImageView = view.findViewById(R.id.image_view)
-        var favoriteBtn: ToggleButton = view.findViewById(R.id.favorite_btn)
+        var favoriteBtn: CheckBox = view.findViewById(R.id.favourite_btn)
 
         val imageLoader = ImageLoader.Builder(view.context)
             .memoryCachePolicy(CachePolicy.ENABLED)

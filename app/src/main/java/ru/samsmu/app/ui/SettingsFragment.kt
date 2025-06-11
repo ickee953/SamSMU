@@ -14,7 +14,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import ru.samsmu.app.databinding.FragmentSettingsBinding
-import ru.samsmu.app.R
 
 class SettingsFragment : Fragment() {
 

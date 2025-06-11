@@ -11,8 +11,11 @@ import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ru.samsmu.app.R
+import ru.samsmu.app.data.db.SamSmuDB
+import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
 
@@ -47,8 +50,21 @@ class UserDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        binding.favoriteBtn.setOnClickListener {
+        binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
+            user?.let {
 
+                val userDao: UserDao =
+                    SamSmuDB.getDatabase(requireActivity().application).userDao()
+
+                lifecycleScope.launch {
+                    if (isChecked) {
+                        userDao.create(it)
+                    } else {
+                        userDao.delete(it)
+                    }
+                }
+
+            }
         }
 
         return binding.root

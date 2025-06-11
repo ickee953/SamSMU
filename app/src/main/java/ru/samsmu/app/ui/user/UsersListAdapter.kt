@@ -12,9 +12,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import android.widget.TextView
-import android.widget.ToggleButton
 import ru.samsmu.app.data.model.User
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.R
@@ -24,11 +22,10 @@ import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import ru.samsmu.app.ui.ReloadableList
-import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.db.SamSmuDB
 import android.app.Application
-import androidx.lifecycle.lifecycleScope
+import android.widget.CheckBox
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -42,7 +39,7 @@ class UsersListAdapter(
         var nameTextView: TextView      = view.findViewById(R.id.name)
         var emailTextView: TextView     = view.findViewById(R.id.email)
         var imageView: ImageView        = view.findViewById(R.id.image_view)
-        var favoriteBtn: ToggleButton   = view.findViewById(R.id.favorite_btn)
+        var favouriteBtn: CheckBox       = view.findViewById(R.id.favourite_btn)
 
         val imageLoader = ImageLoader.Builder(view.context)
             .memoryCachePolicy(CachePolicy.ENABLED)
@@ -81,10 +78,12 @@ class UsersListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favoriteBtn.setOnClickListener {
-            GlobalScope.launch {
-                val userDao: UserDao = SamSmuDB.getDatabase(application).userDao()
-                userDao.create(user)
+        holder.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                GlobalScope.launch {
+                    val userDao: UserDao = SamSmuDB.getDatabase(application).userDao()
+                    userDao.create(user)
+                }
             }
         }
     }

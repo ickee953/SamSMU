@@ -13,12 +13,12 @@ import android.view.LayoutInflater
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import ru.samsmu.app.databinding.FragmentMusclesBinding
+import ru.samsmu.app.databinding.FragmentSettingsBinding
 import ru.samsmu.app.R
 
-class MusclesFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
-    private var _binding : FragmentMusclesBinding? = null
+    private var _binding : FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,15 +27,13 @@ class MusclesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentMusclesBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().title = resources.getString(R.string.action_muscules)
     }
 
 }

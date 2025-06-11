@@ -21,4 +21,9 @@
         <item name="colorOnPrimary">@color/white</item>-->
         <item name="colorOnSecondary">@color/white</item>
     </style>
+
+    <style name="textViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">28sp</item>
+    </style>
+
 </resources>

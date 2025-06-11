@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> {
                 val intent = Intent(
                     this,
-                    MusclesActivity::class.java
+                    SettingsActivity::class.java
                 )
 
                 startActivity(intent)

@@ -7,6 +7,7 @@
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@drawable/baseline_settings_24"
+        android:iconTint="@color/white"
         app:showAsAction="always" />
 
 </menu>

@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import ru.samsmu.app.MainActivity
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
+import ru.samsmu.app.ui.Fetchable
+import ru.samsmu.app.ui.ReloadableAdapter
 
-class UsersFragment : Fragment() {
+class UsersFragment : Fragment(), Fetchable {
 
     private var _binding: FragmentUsersBinding? = null
 
@@ -27,10 +28,42 @@ class UsersFragment : Fragment() {
 
     private lateinit var userViewModel : UserViewModel
 
+    private lateinit var usersListFragment: UsersListFragment
+
+    private lateinit var usersListAdapter : UsersListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+
+        //todo fragment live cycle, adaptor dataset save/restore
+        /*usersListAdapter = UsersListAdapter(
+            requireActivity().application
+        ) { itemView ->
+            val user = itemView.tag as User
+            val bundle = Bundle()
+            bundle.putParcelable(
+                UserDetailsFragment.ARG_USER,
+                user
+            )
+            itemView.findNavController()
+                .navigate(R.id.show_user_details, bundle)
+        }
+
+        usersListFragment = UsersListFragment.getInstance(
+            this,
+            usersListAdapter
+        )
+
+        if(savedInstanceState == null){
+
+            requireActivity().supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add(R.id.users_list_fragment, usersListFragment)
+            }
+
+        }*/
     }
 
     override fun onCreateView(
@@ -45,16 +78,20 @@ class UsersFragment : Fragment() {
         return root
     }
 
-    override fun onResume(){
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        loadUsers()
+        fetch()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun loadUsers(){
+    override fun fetch() {
 
-        //todo show progress bar
         userViewModel.getUsers().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
@@ -62,9 +99,8 @@ class UsersFragment : Fragment() {
                         //todo hide progress bar
                         it.data.let { data ->
 
-                            val usersListAdapter = UsersListAdapter(
-                                requireActivity().application,
-                                data!! as ArrayList<User>
+                            usersListAdapter = UsersListAdapter(
+                                requireActivity().application
                             ) { itemView ->
                                 val user = itemView.tag as User
                                 val bundle = Bundle()
@@ -76,14 +112,17 @@ class UsersFragment : Fragment() {
                                     .navigate(R.id.show_user_details, bundle)
                             }
 
-                            val usersListFragment = UsersListFragment.getInstance(usersListAdapter)
+                            usersListFragment = UsersListFragment.getInstance(
+                                usersListAdapter
+                            )
 
-                            val transaction: FragmentTransaction
-                                = requireActivity().supportFragmentManager.beginTransaction()
+                            requireActivity().supportFragmentManager.commit {
+                                setReorderingAllowed(true)
+                                addToBackStack(null)
+                                add(R.id.users_list_fragment, usersListFragment)
+                            }
 
-                            transaction.replace(R.id.users_list_fragment, usersListFragment)
-                            transaction.addToBackStack(null)
-                            transaction.commit()
+                            usersListAdapter.reload(data!!)
                         }
                     }
 

@@ -4,15 +4,16 @@
 
   Unauthorized copying of this file, via any medium is strictly prohibited
   Proprietary and confidential
-  Written by Panov Vitaly 8 May 2025
+  Written by Panov Vitaly 8 Jun 2025
 -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.user.UsersListFragment">
 
     <androidx.fragment.app.FragmentContainerView
-        android:name="ru.samsmu.app.ui.user.UsersListFragment"
         android:id="@+id/users_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

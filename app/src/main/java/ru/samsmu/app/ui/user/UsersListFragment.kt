@@ -12,17 +12,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersListBinding
+import ru.samsmu.app.ui.Fetchable
+import ru.samsmu.app.ui.ReloadableAdapter
 
 class UsersListFragment : Fragment() {
 
+    private lateinit var listAdapter : ReloadableAdapter<User>
+
+    //private  lateinit var fetchable : Fetchable
+
     companion object {
 
-        fun getInstance( usersListAdapter: RecyclerView.Adapter<*>): Fragment{
+        fun getInstance(
+            //fetchable: Fetchable,
+            adapter: ReloadableAdapter<User>
+        ) : UsersListFragment {
+
             val fragment = UsersListFragment()
-            fragment.usersListAdapter = usersListAdapter
+
+            //fragment.fetchable = fetchable
+            fragment.listAdapter = adapter
 
             return fragment
         }
@@ -33,8 +46,6 @@ class UsersListFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private var usersListAdapter : RecyclerView.Adapter<*>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +62,7 @@ class UsersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if( usersListAdapter != null ) binding.recyclerUserListView.adapter = usersListAdapter
+        binding.recyclerUserListView.adapter = listAdapter
     }
 
     override fun onDestroyView() {

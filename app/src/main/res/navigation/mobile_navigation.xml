@@ -9,7 +9,7 @@
         android:id="@+id/navigation_users"
         android:name="ru.samsmu.app.ui.user.UsersFragment"
         android:label="@string/title_users"
-        tools:layout="@layout/fragment_users_list">
+        tools:layout="@layout/fragment_users">
 
         <action
             android:id="@+id/show_user_details"

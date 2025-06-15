@@ -21,19 +21,20 @@ import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
-import ru.samsmu.app.ui.ReloadableList
 import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.db.SamSmuDB
 import android.app.Application
 import android.widget.CheckBox
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import ru.samsmu.app.ui.ReloadableAdapter
 
 class UsersListAdapter(
     private val application: Application,
-    private val users: MutableList<User>,
     private val onClickListener: View.OnClickListener
-): RecyclerView.Adapter<UsersListAdapter.ItemViewHolder>(), ReloadableList<User> {
+): ReloadableAdapter<User>() {
+
+    private var users: MutableList<User> = ArrayList()
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var nameTextView: TextView      = view.findViewById(R.id.name)
@@ -48,6 +49,14 @@ class UsersListAdapter(
             .build()
     }
 
+    override fun getDataset(): List<User> {
+        return users
+    }
+
+    override fun setDataset(dataset: List<User>?) {
+        users = dataset as ArrayList
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
 
@@ -59,8 +68,10 @@ class UsersListAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val user = users[position]
+
+        holder as ItemViewHolder
 
         holder.nameTextView.text    = "${user.firstName} ${user.lastName} ${user.maidenName}"
         holder.emailTextView.text   = user.email
@@ -89,7 +100,7 @@ class UsersListAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun reloadUsers(dataset: List<User>?) {
+    override fun reload(dataset: List<User>?) {
         if(dataset != null){
             users.clear()
             users.addAll(dataset)

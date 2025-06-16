@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import ru.samsmu.app.data.Status
@@ -16,7 +14,6 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.ReloadableAdapter
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -28,8 +25,6 @@ class UsersFragment : Fragment(), Fetchable {
 
     private lateinit var userViewModel : UserViewModel
 
-    private lateinit var usersListFragment: UsersListFragment
-
     private lateinit var usersListAdapter : UsersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +32,7 @@ class UsersFragment : Fragment(), Fetchable {
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        //todo fragment live cycle, adaptor dataset save/restore
-        /*usersListAdapter = UsersListAdapter(
+        usersListAdapter = UsersListAdapter(
             requireActivity().application
         ) { itemView ->
             val user = itemView.tag as User
@@ -50,20 +44,6 @@ class UsersFragment : Fragment(), Fetchable {
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
         }
-
-        usersListFragment = UsersListFragment.getInstance(
-            this,
-            usersListAdapter
-        )
-
-        if(savedInstanceState == null){
-
-            requireActivity().supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add(R.id.users_list_fragment, usersListFragment)
-            }
-
-        }*/
     }
 
     override fun onCreateView(
@@ -75,13 +55,17 @@ class UsersFragment : Fragment(), Fetchable {
         _binding = FragmentUsersBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.recyclerListView.adapter = usersListAdapter
+
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
 
-        fetch()
+        fetch { items ->
+            usersListAdapter.reload(items)
+        }
     }
 
     override fun onDestroyView() {
@@ -90,40 +74,14 @@ class UsersFragment : Fragment(), Fetchable {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun fetch() {
+    override fun fetch(callback: (Collection<User>) -> Unit) {
 
         userViewModel.getUsers().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
                     Status.SUCCESS -> {
                         //todo hide progress bar
-                        it.data.let { data ->
-
-                            usersListAdapter = UsersListAdapter(
-                                requireActivity().application
-                            ) { itemView ->
-                                val user = itemView.tag as User
-                                val bundle = Bundle()
-                                bundle.putParcelable(
-                                    UserDetailsFragment.ARG_USER,
-                                    user
-                                )
-                                itemView.findNavController()
-                                    .navigate(R.id.show_user_details, bundle)
-                            }
-
-                            usersListFragment = UsersListFragment.getInstance(
-                                usersListAdapter
-                            )
-
-                            requireActivity().supportFragmentManager.commit {
-                                setReorderingAllowed(true)
-                                addToBackStack(null)
-                                add(R.id.users_list_fragment, usersListFragment)
-                            }
-
-                            usersListAdapter.reload(data!!)
-                        }
+                        callback(it.data!!)
                     }
 
                     Status.ERROR -> {

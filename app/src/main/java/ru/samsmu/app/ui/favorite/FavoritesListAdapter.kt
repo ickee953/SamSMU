@@ -43,14 +43,6 @@ class FavoritesListAdapter(
             .build()
     }
 
-    override fun getDataset(): List<User> {
-        return users
-    }
-
-    override fun setDataset(dataset: List<User>?) {
-        users = dataset as ArrayList
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
 
@@ -89,7 +81,7 @@ class FavoritesListAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun reload(dataset: List<User>?) {
+    override fun reload(dataset: Collection<User>?) {
         if(dataset != null){
             users.clear()
             users.addAll(dataset)

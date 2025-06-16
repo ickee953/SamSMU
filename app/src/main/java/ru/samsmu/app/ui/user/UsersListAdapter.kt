@@ -25,13 +25,15 @@ import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.db.SamSmuDB
 import android.app.Application
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import ru.samsmu.app.ui.OnCheckedItemListener
 import ru.samsmu.app.ui.ReloadableAdapter
 
 class UsersListAdapter(
-    private val application: Application,
-    private val onClickListener: View.OnClickListener
+    private val onClickListener: View.OnClickListener,
+    private val onCheckedItemListener: OnCheckedItemListener<User>
 ): ReloadableAdapter<User>() {
 
     private var users: MutableList<User> = ArrayList()
@@ -81,13 +83,8 @@ class UsersListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked) {
-                GlobalScope.launch {
-                    val userDao: UserDao = SamSmuDB.getDatabase(application).userDao()
-                    userDao.create(user)
-                }
-            }
+        holder.favouriteBtn.setOnCheckedChangeListener{ _, isChecked ->
+            onCheckedItemListener.onCheckedChanged(user, isChecked)
         }
     }
 

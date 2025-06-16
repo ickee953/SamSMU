@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import kotlinx.coroutines.launch
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
+import ru.samsmu.app.ui.OnCheckedItemListener
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -38,9 +40,7 @@ class UsersFragment : Fragment(), Fetchable {
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        usersListAdapter = UsersListAdapter(
-            requireActivity().application
-        ) { itemView ->
+        usersListAdapter = UsersListAdapter({ itemView ->
             val user = itemView.tag as User
             val bundle = Bundle()
             bundle.putParcelable(
@@ -49,7 +49,14 @@ class UsersFragment : Fragment(), Fetchable {
             )
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
-        }
+        }, object : OnCheckedItemListener<User> {
+            override fun onCheckedChanged(itemObject: User?, isChecked: Boolean) {
+                if (itemObject != null) {
+                    if(isChecked) userViewModel.addFavourite(itemObject)
+                    else userViewModel.removeFavourite(itemObject)
+                }
+            }
+        })
     }
 
     override fun onCreateView(

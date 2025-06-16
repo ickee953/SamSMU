@@ -47,8 +47,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         emit(Resource.success(data = favorites))
     }
 
-    fun addFavorite( user: User ) = liveData (Dispatchers.IO) {
+    fun addFavourite( user: User ) = liveData (Dispatchers.IO) {
         userDao.create(user)
+        emit(Resource.success(data = user))
+    }
+
+    fun removeFavourite( user: User ) = liveData (Dispatchers.IO) {
+        userDao.delete(user)
         emit(Resource.success(data = user))
     }
 }

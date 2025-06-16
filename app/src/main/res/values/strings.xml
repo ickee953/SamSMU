@@ -5,4 +5,29 @@
     <string name="action_muscules">Группы мышц</string>
     <string name="action_settings">Настройки</string>
     <string name="action_close">Закрыть</string>
+    <string name="sensor_1">Сенсор 1</string>
+    <string name="sensor_2">Сенсор 2</string>
+    <string name="sensor_3">Сенсор 3</string>
+    <string name="sensor_4">Сенсор 4</string>
+    <string name="sensor_5">Сенсор 5</string>
+    <string name="sensor_6">Сенсор 6</string>
+    <string name="sensor_7">Сенсор 7</string>
+    <string name="Biceps">Biceps</string>
+    <string name="Triceps">Triceps</string>
+    <string name="Deltoid">Deltoid</string>
+    <string name="Pectoralis">Pectoralis</string>
+    <string name="Quadriceps">Quadriceps</string>
+    <string name="Hamstrings">Hamstrings</string>
+    <string name="Calf">Calf</string>
+    <string name="Trapezius">Trapezius</string>
+    <string-array name="muscles">
+        <item>@string/Triceps</item>
+        <item>@string/Deltoid</item>
+        <item>@string/Pectoralis</item>
+        <item>@string/Quadriceps</item>
+        <item>@string/Hamstrings</item>
+        <item>@string/Calf</item>
+        <item>@string/Trapezius</item>
+    </string-array>
+    <string name="save">Сохранить</string>
 </resources>

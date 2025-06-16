@@ -36,12 +36,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:name="ru.samsmu.app.ui.SettingsFragment"
+        android:name="ru.samsmu.app.ui.settings.SettingsFragment"
         android:id="@+id/settings_fragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appbar"/>
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

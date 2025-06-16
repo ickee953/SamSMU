@@ -32,7 +32,7 @@ class FavoriteFragment : Fragment(), Fetchable {
     private var list : List<User> = ArrayList()
 
     companion object {
-        const val ARG_LIST = "list"
+        const val ARG_LIST = "favourites_list"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +69,7 @@ class FavoriteFragment : Fragment(), Fetchable {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        if(savedInstanceState == null){
+        if(savedInstanceState == null || list.isEmpty()){
             fetch { items ->
                 list = items.toList()
                 listAdapter.reload(list)

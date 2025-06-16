@@ -14,7 +14,6 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.favorite.FavoriteFragment.Companion.ARG_LIST
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -29,6 +28,10 @@ class UsersFragment : Fragment(), Fetchable {
     private lateinit var usersListAdapter : UsersListAdapter
 
     private var list : List<User> = ArrayList()
+
+    companion object {
+        const val ARG_LIST = "users_list"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +69,7 @@ class UsersFragment : Fragment(), Fetchable {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        if(savedInstanceState == null){
+        if(savedInstanceState == null || list.isEmpty()){
             fetch { items ->
                 list = items.toList()
                 usersListAdapter.reload(items)

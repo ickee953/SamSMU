@@ -14,6 +14,7 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
+import ru.samsmu.app.ui.favorite.FavoriteFragment.Companion.ARG_LIST
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -26,6 +27,8 @@ class UsersFragment : Fragment(), Fetchable {
     private lateinit var userViewModel : UserViewModel
 
     private lateinit var usersListAdapter : UsersListAdapter
+
+    private var list : List<User> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +66,20 @@ class UsersFragment : Fragment(), Fetchable {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        fetch { items ->
-            usersListAdapter.reload(items)
+        if(savedInstanceState == null){
+            fetch { items ->
+                list = items.toList()
+                usersListAdapter.reload(items)
+            }
+        } else if(savedInstanceState.containsKey(ARG_LIST)){
+            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            usersListAdapter.reload(list)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
     }
 
     override fun onDestroyView() {

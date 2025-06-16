@@ -27,14 +27,18 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     private lateinit var userViewModel : UserViewModel
 
-    private lateinit var listAdapter: FavoritesListAdapter
+    private lateinit var listAdapter : FavoritesListAdapter
+
+    private var list : List<User> = ArrayList()
+
+    companion object {
+        const val ARG_LIST = "list"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-
-        //todo fragment live cycle, adaptor dataset save/restore
 
         listAdapter = FavoritesListAdapter { itemView ->
             val user = itemView.tag as User
@@ -65,9 +69,20 @@ class FavoriteFragment : Fragment(), Fetchable {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        fetch { items ->
-            listAdapter.reload(items)
+        if(savedInstanceState == null){
+            fetch { items ->
+                list = items.toList()
+                listAdapter.reload(list)
+            }
+        } else if(savedInstanceState.containsKey(ARG_LIST)){
+            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            listAdapter.reload(list)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
     }
 
     override fun onDestroyView() {

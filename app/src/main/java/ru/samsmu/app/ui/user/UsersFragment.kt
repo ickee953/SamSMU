@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import ru.samsmu.app.data.Status
@@ -15,6 +16,7 @@ import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
 import ru.samsmu.app.ui.OnCheckedItemListener
+import ru.samsmu.app.ui.favorite.FavoriteFragment
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -28,7 +30,7 @@ class UsersFragment : Fragment(), Fetchable {
 
     private lateinit var usersListAdapter : UsersListAdapter
 
-    private var list : List<User> = ArrayList()
+    private var list : MutableList<User> = ArrayList()
 
     companion object {
         const val ARG_LIST = "users_list"
@@ -59,7 +61,13 @@ class UsersFragment : Fragment(), Fetchable {
                                     Status.SUCCESS -> {
                                         list.forEach { item ->
                                             if(item == itemObject){
+
                                                 item.isFavourite = 1
+
+                                                setFragmentResult(
+                                                    FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
+                                                    Bundle()
+                                                )
                                             }
                                         }
 
@@ -87,7 +95,13 @@ class UsersFragment : Fragment(), Fetchable {
                                     Status.SUCCESS -> {
                                         list.forEach { item ->
                                             if(item == itemObject){
+
                                                 item.isFavourite = 0
+
+                                                setFragmentResult(
+                                                    FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
+                                                    Bundle()
+                                                )
                                             }
                                         }
 
@@ -137,7 +151,7 @@ class UsersFragment : Fragment(), Fetchable {
 
         if(savedInstanceState == null){
             fetch({ items ->
-                list = items
+                list = items as ArrayList
                 usersListAdapter.reload(list)
                 //todo hide progress bar
             }, { message ->

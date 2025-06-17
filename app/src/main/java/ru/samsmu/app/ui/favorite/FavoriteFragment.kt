@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import ru.samsmu.app.ui.user.UserViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.samsmu.app.data.Status
@@ -19,6 +20,11 @@ import ru.samsmu.app.ui.Fetchable
 
 class FavoriteFragment : Fragment(), Fetchable {
 
+    companion object {
+        const val ARG_LIST                      = "favourites_list"
+        const val ARG_FAVOURITE_LIST_CHANGED    = "favourite_list_changed"
+    }
+
     private var _binding: FragmentFavoriteBinding? = null
 
     // This property is only valid between onCreateView and
@@ -29,7 +35,7 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     private lateinit var listAdapter : FavoritesListAdapter
 
-    private var list : List<User> = ArrayList()
+    private var list : MutableList<User> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,18 @@ class FavoriteFragment : Fragment(), Fetchable {
                 .navigate(R.id.show_user_details, bundle)
         }
 
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
+            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+        }
+
+        setFragmentResultListener(ARG_FAVOURITE_LIST_CHANGED) { _, _->
+            fetch({ items ->
+                list = items as ArrayList
+                listAdapter.reload(list)
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            })
+        }
     }
 
     override fun onCreateView(
@@ -62,15 +80,26 @@ class FavoriteFragment : Fragment(), Fetchable {
         return root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        fetch( { items ->
-            list = items
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
+            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
             listAdapter.reload(list)
-        }, { message ->
-            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-        })
+        } else {
+            fetch({ items ->
+                list = items as ArrayList
+                listAdapter.reload(list)
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            })
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
     }
 
     override fun onDestroyView() {

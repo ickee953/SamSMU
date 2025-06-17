@@ -52,9 +52,35 @@ class UsersFragment : Fragment(), Fetchable {
             override fun onCheckedChanged(itemObject: User?, isChecked: Boolean) {
                 if (itemObject != null) {
                     if(isChecked) {
-                        userViewModel.addFavourite(itemObject)
+                        userViewModel.addFavourite(itemObject).observe(viewLifecycleOwner){ res->
+                            res?.let {
+                                when(it.status){
+                                    Status.SUCCESS ->
+                                        Toast.makeText(requireActivity(),
+                                            "${it.data?.firstName} added to favourite",
+                                            Toast.LENGTH_LONG).show()
+                                    Status.ERROR ->
+                                        Toast.makeText(requireActivity(), it.message,
+                                            Toast.LENGTH_LONG).show()
+                                    Status.LOADING -> {}
+                                }
+                            }
+                        }
                     } else {
-                        userViewModel.removeFavourite(itemObject)
+                        userViewModel.removeFavourite(itemObject).observe(viewLifecycleOwner){ res->
+                            res?.let {
+                                when(it.status){
+                                    Status.SUCCESS ->
+                                        Toast.makeText(requireActivity(),
+                                            "${it.data?.firstName} removed from favourite",
+                                            Toast.LENGTH_LONG).show()
+                                    Status.ERROR ->
+                                        Toast.makeText(requireActivity(), it.message,
+                                            Toast.LENGTH_LONG).show()
+                                    Status.LOADING -> {}
+                                }
+                            }
+                        }
                     }
                 }
             }

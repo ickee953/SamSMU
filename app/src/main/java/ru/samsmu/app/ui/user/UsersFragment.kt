@@ -51,8 +51,11 @@ class UsersFragment : Fragment(), Fetchable {
         }, object : OnCheckedItemListener<User> {
             override fun onCheckedChanged(itemObject: User?, isChecked: Boolean) {
                 if (itemObject != null) {
-                    if(isChecked) userViewModel.addFavourite(itemObject)
-                    else userViewModel.removeFavourite(itemObject)
+                    if(isChecked) {
+                        userViewModel.addFavourite(itemObject)
+                    } else {
+                        userViewModel.removeFavourite(itemObject)
+                    }
                 }
             }
         })
@@ -77,8 +80,8 @@ class UsersFragment : Fragment(), Fetchable {
 
         if(savedInstanceState == null || list.isEmpty()){
             fetch({ items ->
-                list = items.toList()
-                usersListAdapter.reload(items)
+                list = items
+                usersListAdapter.reload(list)
                 //todo hide progress bar
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
@@ -94,6 +97,7 @@ class UsersFragment : Fragment(), Fetchable {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        Toast.makeText(requireActivity(), "UsersFragment: onSaveInstanceState()", Toast.LENGTH_LONG).show()
         outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
     }
 
@@ -104,7 +108,7 @@ class UsersFragment : Fragment(), Fetchable {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun fetch(
-        success: (Collection<User>) -> Unit,
+        success: (List<User>) -> Unit,
         error: (String?) -> Unit,
         loading: () -> Unit) {
 

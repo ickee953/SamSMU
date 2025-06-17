@@ -71,12 +71,10 @@ class FavoriteFragment : Fragment(), Fetchable {
 
         if(savedInstanceState == null || list.isEmpty()){
             fetch( { items ->
-                list = items.toList()
+                list = items
                 listAdapter.reload(list)
-                //todo hide progress bar
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-                //todo hide progress bar
             })
         } else if(savedInstanceState.containsKey(ARG_LIST)){
             list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
@@ -96,7 +94,7 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun fetch(
-        success: (Collection<User>) -> Unit,
+        success: (List<User>) -> Unit,
         error: (String?) -> Unit,
         loading: () -> Unit
     ) {

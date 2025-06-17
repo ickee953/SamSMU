@@ -70,10 +70,14 @@ class FavoriteFragment : Fragment(), Fetchable {
         super.onViewStateRestored(savedInstanceState)
 
         if(savedInstanceState == null || list.isEmpty()){
-            fetch { items ->
+            fetch( { items ->
                 list = items.toList()
                 listAdapter.reload(list)
-            }
+                //todo hide progress bar
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+                //todo hide progress bar
+            })
         } else if(savedInstanceState.containsKey(ARG_LIST)){
             list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
             listAdapter.reload(list)
@@ -91,23 +95,17 @@ class FavoriteFragment : Fragment(), Fetchable {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun fetch(callback: (Collection<User>) -> Unit) {
+    override fun fetch(
+        success: (Collection<User>) -> Unit,
+        error: (String?) -> Unit,
+        loading: () -> Unit
+    ) {
         userViewModel.getFavorites().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
-                    Status.SUCCESS -> {
-                        //todo hide progress bar
-                        callback(it.data!!)
-                    }
-
-                    Status.ERROR -> {
-                        //todo hide progress bar
-                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                    }
-
-                    Status.LOADING -> {
-                        //todo show progress bar
-                    }
+                    Status.SUCCESS -> success(it.data!!)
+                    Status.ERROR -> error(it.message)
+                    Status.LOADING -> loading()
                 }
             }
         }

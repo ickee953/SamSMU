@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import kotlinx.coroutines.launch
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
@@ -77,10 +76,16 @@ class UsersFragment : Fragment(), Fetchable {
         super.onViewStateRestored(savedInstanceState)
 
         if(savedInstanceState == null || list.isEmpty()){
-            fetch { items ->
+            fetch({ items ->
                 list = items.toList()
                 usersListAdapter.reload(items)
-            }
+                //todo hide progress bar
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+                //todo hide progress bar
+            }, {
+                //todo show progress bar
+            })
         } else if(savedInstanceState.containsKey(ARG_LIST)){
             list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
             usersListAdapter.reload(list)
@@ -98,24 +103,17 @@ class UsersFragment : Fragment(), Fetchable {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun fetch(callback: (Collection<User>) -> Unit) {
+    override fun fetch(
+        success: (Collection<User>) -> Unit,
+        error: (String?) -> Unit,
+        loading: () -> Unit) {
 
         userViewModel.getUsers().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
-                    Status.SUCCESS -> {
-                        //todo hide progress bar
-                        callback(it.data!!)
-                    }
-
-                    Status.ERROR -> {
-                        //todo hide progress bar
-                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                    }
-
-                    Status.LOADING -> {
-                        //todo show progress bar
-                    }
+                    Status.SUCCESS -> success(it.data!!)
+                    Status.ERROR -> error(it.message)
+                    Status.LOADING -> loading()
                 }
             }
         }

@@ -49,20 +49,34 @@ class UsersFragment : Fragment(), Fetchable {
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
         }, object : OnCheckedItemListener<User> {
-            override fun onCheckedChanged(itemObject: User?, isChecked: Boolean) {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
                 if (itemObject != null) {
                     if(isChecked) {
                         userViewModel.addFavourite(itemObject).observe(viewLifecycleOwner){ res->
                             res?.let {
                                 when(it.status){
-                                    Status.SUCCESS ->
-                                        Toast.makeText(requireActivity(),
-                                            "${it.data?.firstName} added to favourite",
-                                            Toast.LENGTH_LONG).show()
-                                    Status.ERROR ->
-                                        Toast.makeText(requireActivity(), it.message,
-                                            Toast.LENGTH_LONG).show()
-                                    Status.LOADING -> {}
+                                    Status.SUCCESS -> {
+                                        list.forEach { item ->
+                                            if(item == itemObject){
+                                                item.isFavourite = 1
+                                            }
+                                        }
+
+                                        view.isEnabled = true
+                                    }
+                                    Status.ERROR -> {
+                                        view.isEnabled = true
+
+                                        Toast.makeText(
+                                            requireActivity(),
+                                            it.message,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                    Status.LOADING -> {
+                                        view.isEnabled = false
+                                    }
                                 }
                             }
                         }
@@ -70,14 +84,27 @@ class UsersFragment : Fragment(), Fetchable {
                         userViewModel.removeFavourite(itemObject).observe(viewLifecycleOwner){ res->
                             res?.let {
                                 when(it.status){
-                                    Status.SUCCESS ->
-                                        Toast.makeText(requireActivity(),
-                                            "${it.data?.firstName} removed from favourite",
-                                            Toast.LENGTH_LONG).show()
-                                    Status.ERROR ->
-                                        Toast.makeText(requireActivity(), it.message,
-                                            Toast.LENGTH_LONG).show()
-                                    Status.LOADING -> {}
+                                    Status.SUCCESS -> {
+                                        list.forEach { item ->
+                                            if(item == itemObject){
+                                                item.isFavourite = 0
+                                            }
+                                        }
+
+                                        view.isEnabled = true
+                                    }
+                                    Status.ERROR -> {
+                                        view.isEnabled = true
+
+                                        Toast.makeText(
+                                            requireActivity(),
+                                            it.message,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                    Status.LOADING -> {
+                                        view.isEnabled = false
+                                    }
                                 }
                             }
                         }
@@ -85,6 +112,10 @@ class UsersFragment : Fragment(), Fetchable {
                 }
             }
         })
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
+            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+        }
     }
 
     override fun onCreateView(
@@ -104,7 +135,7 @@ class UsersFragment : Fragment(), Fetchable {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        if(savedInstanceState == null || list.isEmpty()){
+        if(savedInstanceState == null){
             fetch({ items ->
                 list = items
                 usersListAdapter.reload(list)

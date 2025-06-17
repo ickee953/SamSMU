@@ -1,5 +1,7 @@
 package ru.samsmu.app.ui
 
+import android.view.View
+
 interface OnCheckedItemListener<T> {
 
     /**
@@ -8,6 +10,6 @@ interface OnCheckedItemListener<T> {
      * @param itemObject The item object whose state has changed.
      * @param isChecked  The new checked state of buttonView.
      */
-    fun onCheckedChanged(itemObject: T?, isChecked: Boolean)
+    fun onCheckedChanged(itemObject: T?, view: View, isChecked: Boolean)
 
 }

@@ -85,11 +85,11 @@ class UsersListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-        holder.favouriteBtn.setOnClickListener{ _ ->
+        holder.favouriteBtn.setOnClickListener{ view ->
             if(user.isFavourite == 1){
-                onCheckedItemListener.onCheckedChanged(user, false)
+                onCheckedItemListener.onCheckedChanged(user, view, false)
             } else {
-                onCheckedItemListener.onCheckedChanged(user, true)
+                onCheckedItemListener.onCheckedChanged(user, view,true)
             }
         }
     }

@@ -97,7 +97,6 @@ class UsersFragment : Fragment(), Fetchable {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Toast.makeText(requireActivity(), "UsersFragment: onSaveInstanceState()", Toast.LENGTH_LONG).show()
         outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
     }
 

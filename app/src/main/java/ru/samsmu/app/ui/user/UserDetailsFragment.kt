@@ -50,9 +50,11 @@ class UserDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
-            user?.let {
+        user?.let {
 
+            binding.favouriteBtn.isChecked = it.isFavourite == 1
+
+            binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
                 val userDao: UserDao =
                     SamSmuDB.getDatabase(requireActivity().application).userDao()
 
@@ -63,7 +65,6 @@ class UserDetailsFragment : Fragment() {
                         userDao.delete(it)
                     }
                 }
-
             }
         }
 

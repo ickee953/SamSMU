@@ -27,6 +27,16 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         const val DEFAULT_ERR_MSG = "Error Occured!"
     }
 
+    private suspend fun withFavourite(users : List<User>) : List<User>{
+        val favourites = userDao.favorites()
+
+        users.forEach { user ->
+            if( favourites.contains(user) ) user.isFavourite = 1
+        }
+
+        return users
+    }
+
     private val repository: UserRepository = UserRepository( ApiHelper( RetrofitBuilder.apiService ) )
     private val userDao: UserDao = SamSmuDB.getDatabase( application ).userDao()
 
@@ -34,8 +44,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         emit(Resource.loading(data = null))
         try {
             val usersListResponse: UsersList = repository.getUsersList()
-            val users: List<User>? = usersListResponse.users
-            emit(Resource.success(data = users))
+            //val users: List<User>? = usersListResponse.users
+            val users = usersListResponse.users?.let { withFavourite(it) }
+            if( users != null ){
+                emit(Resource.success(data = users))
+            } else {
+                emit(Resource.error(data = null, message = "Received list is null"))
+            }
         } catch( e: Exception ) {
             emit(Resource.error(data = null, message = e.message ?: DEFAULT_ERR_MSG))
         }

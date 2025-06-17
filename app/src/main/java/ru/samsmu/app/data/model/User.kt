@@ -16,6 +16,11 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+/**
+ *
+ * @param isFavourite 1 - is favourite, 0 - not in favourite
+ * */
+
 @Entity(
     tableName = "user",
     indices = [Index(value = ["id"], unique = true)]
@@ -26,7 +31,8 @@ data class User(
     @SerializedName("lastName") @ColumnInfo(name = "lastName") var lastName: String?,
     @SerializedName("maidenName") @ColumnInfo(name = "maidenName") var maidenName: String?,
     @SerializedName("email") @ColumnInfo(name = "email") var email: String?,
-    @SerializedName("image") @ColumnInfo(name = "image") var image: String?
+    @SerializedName("image") @ColumnInfo(name = "image") var image: String?,
+    var isFavourite: Int = 0
 ) : Parcelable {
 
     constructor(parcel : Parcel) : this(
@@ -35,7 +41,8 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readInt()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -45,6 +52,7 @@ data class User(
         dest.writeString(maidenName)
         dest.writeString(email)
         dest.writeString(image)
+        dest.writeInt(isFavourite)
     }
 
     override fun describeContents(): Int {

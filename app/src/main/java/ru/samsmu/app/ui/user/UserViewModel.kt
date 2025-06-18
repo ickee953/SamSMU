@@ -44,7 +44,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         emit(Resource.loading(data = null))
         try {
             val usersListResponse: UsersList = repository.getUsersList()
-            //val users: List<User>? = usersListResponse.users
             val users = usersListResponse.users?.let { withFavourite(it) }
             if( users != null ){
                 emit(Resource.success(data = users))
@@ -59,6 +58,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     fun getFavorites() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
         val favorites = userDao.favorites()
+        favorites.forEach { user->
+            user.isFavourite = 1
+        }
         emit(Resource.success(data = favorites))
     }
 

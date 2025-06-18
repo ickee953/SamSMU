@@ -22,6 +22,7 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     companion object {
         const val ARG_LIST                      = "favourites_list"
+        const val ARG_USER                      = "favourites_item"
         const val ARG_FAVOURITE_LIST_CHANGED    = "favourite_list_changed"
     }
 

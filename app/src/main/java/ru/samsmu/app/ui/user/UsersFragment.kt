@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import ru.samsmu.app.data.Status
@@ -15,8 +14,7 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.OnCheckedItemListener
-import ru.samsmu.app.ui.favorite.FavoriteFragment
+import ru.samsmu.app.ui.favorite.UserFavouriteProducer
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -50,82 +48,7 @@ class UsersFragment : Fragment(), Fetchable {
             )
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
-        }, object : OnCheckedItemListener<User> {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
-                if (itemObject != null) {
-                    if(isChecked) {
-                        userViewModel.addFavourite(itemObject).observe(viewLifecycleOwner){ res->
-                            res?.let {
-                                when(it.status){
-                                    Status.SUCCESS -> {
-                                        list.forEach { item ->
-                                            if(item == itemObject){
-
-                                                item.isFavourite = 1
-
-                                                setFragmentResult(
-                                                    FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                                                    Bundle()
-                                                )
-                                            }
-                                        }
-
-                                        view.isEnabled = true
-                                    }
-                                    Status.ERROR -> {
-                                        view.isEnabled = true
-
-                                        Toast.makeText(
-                                            requireActivity(),
-                                            it.message,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                    Status.LOADING -> {
-                                        view.isEnabled = false
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        userViewModel.removeFavourite(itemObject).observe(viewLifecycleOwner){ res->
-                            res?.let {
-                                when(it.status){
-                                    Status.SUCCESS -> {
-                                        list.forEach { item ->
-                                            if(item == itemObject){
-
-                                                item.isFavourite = 0
-
-                                                setFragmentResult(
-                                                    FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                                                    Bundle()
-                                                )
-                                            }
-                                        }
-
-                                        view.isEnabled = true
-                                    }
-                                    Status.ERROR -> {
-                                        view.isEnabled = true
-
-                                        Toast.makeText(
-                                            requireActivity(),
-                                            it.message,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                    Status.LOADING -> {
-                                        view.isEnabled = false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })
+        }, UserFavouriteProducer(this, userViewModel))
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
             list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!

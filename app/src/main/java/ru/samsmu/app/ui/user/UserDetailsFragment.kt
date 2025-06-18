@@ -6,18 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
-import coil.transform.RoundedCornersTransformation
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import ru.samsmu.app.R
-import ru.samsmu.app.data.db.SamSmuDB
-import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
+import ru.samsmu.app.ui.favorite.UserFavouriteProducer
 
 class UserDetailsFragment : Fragment() {
 
@@ -25,11 +20,15 @@ class UserDetailsFragment : Fragment() {
         const val ARG_USER = "user"
     }
 
+    private lateinit var userViewModel : UserViewModel
+
     private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(false)
+
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         arguments?.let {
             if(it.containsKey(ARG_USER)){
@@ -52,19 +51,16 @@ class UserDetailsFragment : Fragment() {
 
         user?.let {
 
-            binding.favouriteBtn.isChecked = it.isFavourite == 1
+            val userFavouriteProducer = UserFavouriteProducer(this, userViewModel)
 
-            binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
-                val userDao: UserDao =
-                    SamSmuDB.getDatabase(requireActivity().application).userDao()
+            binding.favouriteBtn.setOnClickListener { view ->
 
-                lifecycleScope.launch {
-                    if (isChecked) {
-                        userDao.create(it)
-                    } else {
-                        userDao.delete(it)
-                    }
+                if(it.isFavourite == 1){
+                    userFavouriteProducer.onCheckedChanged(user, view, false)
+                } else {
+                    userFavouriteProducer.onCheckedChanged(user, view,true)
                 }
+
             }
         }
 
@@ -90,14 +86,12 @@ class UserDetailsFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun loadUser(){
-
-    }
-
     @SuppressLint("SetTextI18n")
     private fun updateUI(user: User){
         binding.name.text    = "${user.firstName} ${user.lastName} ${user.maidenName}"
         binding.email.text   = user.email
+
+        binding.favouriteBtn.isChecked = user.isFavourite == 1
 
         val imageLoader = ImageLoader.Builder(requireContext())
             .memoryCachePolicy(CachePolicy.ENABLED)

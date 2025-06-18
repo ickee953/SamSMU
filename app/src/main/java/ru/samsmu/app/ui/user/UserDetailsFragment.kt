@@ -106,13 +106,9 @@ class UserDetailsFragment : Fragment() {
             .build()
 
         if( user.image != null && user.image != ""){
-            binding.imageView.load( user.image, imageLoader ){
-                transformations(RoundedCornersTransformation(25F))
-            }
+            binding.imageView.load( user.image, imageLoader )
         } else {
-            binding.imageView.load(R.drawable.baseline_person_24){
-                transformations(RoundedCornersTransformation(25F))
-            }
+            binding.imageView.visibility = View.GONE
         }
     }
 

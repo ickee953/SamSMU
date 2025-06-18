@@ -1,46 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  © Panov Vitaly 2025 - All Rights Reserved
+
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Panov Vitaly 18 Jun 2025
+-->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:ignore="MergeRootFrame">
 
-    <RelativeLayout
-        android:id="@+id/title_view"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/item_detail_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="@dimen/user_image_details_width"
-            android:layout_height="@dimen/user_image_details_width"
-            android:layout_marginTop="@dimen/content_margin_min"
-            android:src="@drawable/baseline_person_24"/>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/content_margin_min"
-            android:lines="1"
-            android:layout_below="@id/image_view"/>
+            <!-- Scrollable content -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
-            android:layout_margin="@dimen/content_margin_min"
-            android:lines="1" />
+                <RelativeLayout
+                    android:id="@+id/title_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin"
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:lines="1"
+                        android:textSize="@dimen/details_title_text_size"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:lines="2"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_person_24" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/content_margin_min"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginEnd="@dimen/content_margin"
+        android:layout_marginBottom="16dp"
+        app:layout_anchor="@+id/item_detail_scroll_view"
+        app:layout_anchorGravity="top|end"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/card_corner_radius">
 
         <CheckBox
             android:id="@+id/favourite_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin_min"
-            android:layout_alignParentEnd="true"
             android:button="@drawable/sl_favourite_24dp"
             app:buttonTint="@android:color/darker_gray"/>
 
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

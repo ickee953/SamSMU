@@ -1,3 +1,11 @@
+/**
+ * © Panov Vitaly 2025 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Panov Vitaly 19 Jun 2025
+ */
+
 package ru.samsmu.app.ui.favorite
 
 import android.annotation.SuppressLint
@@ -11,7 +19,7 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.OnCheckedItemListener
 import ru.samsmu.app.ui.user.UserViewModel
 
-class UserFavouriteProducer(
+open class UserFavouriteProducer(
     private val fragment: Fragment,
     private val viewModel: UserViewModel
 ) : OnCheckedItemListener<User> {

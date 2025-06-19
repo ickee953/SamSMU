@@ -1,3 +1,11 @@
+/**
+ * © Panov Vitaly 2025 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Panov Vitaly 19 Jun 2025
+ */
+
 package ru.samsmu.app.ui.user
 
 import android.annotation.SuppressLint
@@ -48,7 +56,16 @@ class UsersFragment : Fragment(), Fetchable {
             )
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
-        }, UserFavouriteProducer(this, userViewModel))
+        }, object : UserFavouriteProducer(this, userViewModel) {
+            override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
+                super.onCheckedChanged(itemObject, view, isChecked)
+                //update list item element
+                list.find { it == itemObject }?.let {
+                    if(isChecked) it.isFavourite = 1
+                    else it.isFavourite = 0
+                }
+            }
+        })
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
             list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!

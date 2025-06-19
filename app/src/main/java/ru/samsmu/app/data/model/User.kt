@@ -14,7 +14,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 
 /**
  *
@@ -32,7 +35,10 @@ data class User(
     @SerializedName("maidenName") @ColumnInfo(name = "maidenName") var maidenName: String?,
     @SerializedName("email") @ColumnInfo(name = "email") var email: String?,
     @SerializedName("image") @ColumnInfo(name = "image") var image: String?,
-    var isFavourite: Int = 0
+    @SerializedName("phone") @ColumnInfo(name = "phone") var phone: String?,
+    @SerializedName("address") @ColumnInfo(name = "address") var address: Address?,
+    var isFavourite: Int = 0,
+    @SerializedName("age") @ColumnInfo(name = "age") var age: Int = -1,
 ) : Parcelable {
 
     constructor(parcel : Parcel) : this(
@@ -42,6 +48,9 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readParcelable(Address::class.java.classLoader),
+        parcel.readInt(),
         parcel.readInt()
     )
 
@@ -52,6 +61,9 @@ data class User(
         dest.writeString(maidenName)
         dest.writeString(email)
         dest.writeString(image)
+        dest.writeString(phone)
+        dest.writeParcelable(address, flags)
+        dest.writeInt(age)
         dest.writeInt(isFavourite)
     }
 
@@ -71,6 +83,9 @@ data class User(
         if (maidenName != other.maidenName) return false
         if (email != other.email) return false
         if (image != other.image) return false
+        if (phone != other.phone) return false
+        if (address != other.address) return false
+        if (age != other.age) return false
 
         return true
     }
@@ -82,11 +97,29 @@ data class User(
         result = 31 * result + (maidenName?.hashCode() ?: 0)
         result = 31 * result + (email?.hashCode() ?: 0)
         result = 31 * result + (image?.hashCode() ?: 0)
+        result = 31 * result + (phone?.hashCode() ?: 0)
+        result = 31 * result + (address?.hashCode() ?: 0)
+        result = 31 * result + (age.hashCode() ?: 0)
 
         return result
     }
 
     companion object CREATOR : Parcelable.Creator<User> {
+
+        @TypeConverter
+        @JvmStatic
+        fun fromAddress( value : Address? ) : String? {
+            val type = object: TypeToken<Address>(){}.type
+            return Gson().toJson(value, type)
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun toAddress( value : String? ) : Address? {
+            val type = object: TypeToken<Address>(){}.type
+            return Gson().fromJson(value, type)
+        }
+
         override fun createFromParcel(parcel: Parcel): User {
             return User(parcel)
         }

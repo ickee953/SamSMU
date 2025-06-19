@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
+import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
 import ru.samsmu.app.ui.favorite.UserFavouriteProducer
@@ -89,7 +90,10 @@ class UserDetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun updateUI(user: User){
         binding.name.text    = "${user.firstName} ${user.lastName} ${user.maidenName}"
-        binding.email.text   = user.email
+        binding.email.text   = "${user.email}"
+        binding.age.text     = "${resources.getString(R.string.age)}: ${user.age}"
+        binding.phone.text   = "${user.phone}"
+        binding.address.text = "${user.address}"
 
         binding.favouriteBtn.isChecked = user.isFavourite == 1
 

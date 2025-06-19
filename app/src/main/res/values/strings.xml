@@ -31,4 +31,5 @@
         <item>@string/Trapezius</item>
     </string-array>
     <string name="save">Сохранить</string>
+    <string name="age">Возраст</string>
 </resources>

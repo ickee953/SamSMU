@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ca2c54c0bf9a41cb9635dccd536f656a",
+    "identityHash": "2543af25e1507637363f5983a118f913",
     "entities": [
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `firstName` TEXT, `lastName` TEXT, `maidenName` TEXT, `email` TEXT, `image` TEXT, `isFavourite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `firstName` TEXT, `lastName` TEXT, `maidenName` TEXT, `email` TEXT, `image` TEXT, `phone` TEXT, `address` TEXT, `age` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -40,6 +40,22 @@
             "affinity": "TEXT"
           },
           {
+            "fieldPath": "phone",
+            "columnName": "phone",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "age",
+            "columnName": "age",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isFavourite",
             "columnName": "isFavourite",
             "affinity": "INTEGER",
@@ -67,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca2c54c0bf9a41cb9635dccd536f656a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2543af25e1507637363f5983a118f913')"
     ]
   }
 }

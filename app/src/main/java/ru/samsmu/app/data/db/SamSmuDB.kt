@@ -12,12 +12,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.samsmu.app.data.model.User
 
 @Database(
     version = 1,
     entities = [User::class]
 )
+@TypeConverters(User::class)
 abstract class SamSmuDB : RoomDatabase() {
 
     abstract fun userDao(): UserDao

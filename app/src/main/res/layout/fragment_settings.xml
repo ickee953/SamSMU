@@ -7,7 +7,8 @@
   Written by Panov Vitaly 8 Jun 2025
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
@@ -17,7 +18,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/card_view_save_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,6 +173,24 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:layout_marginEnd="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginBottom="@dimen/content_margin_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_8">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -177,9 +200,10 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_save_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:cardBackgroundColor="@color/white">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -191,4 +215,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

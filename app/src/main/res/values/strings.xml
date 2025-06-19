@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SamsmuApp</string>
-    <string name="title_users">Пользователи</string>
+    <string name="title_users">Пациенты</string>
     <string name="title_favorite">Избранное</string>
-    <string name="action_muscules">Группы мышц</string>
+    <string name="action_muscules">Назначение мышц</string>
     <string name="action_settings">Настройки</string>
     <string name="action_close">Закрыть</string>
     <string name="sensor_1">Сенсор 1</string>
@@ -12,6 +12,7 @@
     <string name="sensor_5">Сенсор 5</string>
     <string name="sensor_6">Сенсор 6</string>
     <string name="sensor_7">Сенсор 7</string>
+    <string name="sensor_8">Сенсор 8</string>
     <string name="Biceps">Biceps</string>
     <string name="Triceps">Triceps</string>
     <string name="Deltoid">Deltoid</string>

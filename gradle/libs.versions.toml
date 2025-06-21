@@ -20,6 +20,7 @@ roomRuntime = "2.7.1"
 roomKtx = "2.7.1"
 roomVersion = "2.7.1"
 kspVersion = "2.0.21-1.0.27"
+recyclerviewSelection = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,7 @@ io-coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coilVersion" 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
+androidx-recyclerview-selection = { group = "androidx.recyclerview", name = "recyclerview-selection", version.ref = "recyclerviewSelection" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

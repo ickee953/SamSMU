@@ -12,6 +12,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+        <item name="actionModeCloseDrawable">@drawable/baseline_close_24</item>
     </style>
 
     <style name="AppActionBarTheme" parent="Widget.MaterialComponents.Toolbar.Primary">
@@ -25,6 +28,12 @@
     <style name="textViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">28sp</item>
         <item name="android:layout_margin">@dimen/content_margin</item>
+    </style>
+
+    <style name="Widget.App.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
+        <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
+        <item name="background">@color/material_grey_900</item>
     </style>
 
 </resources>

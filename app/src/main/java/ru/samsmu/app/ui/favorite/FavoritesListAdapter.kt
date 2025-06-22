@@ -154,9 +154,9 @@ class FavoritesListAdapter(
         //get index of element
         val index = users.indexOfFirst { it == user }
 
-        if(users.remove(user)) {
+        if(index < 0 || index >= users.size) throw IndexOutOfBoundsException()
 
-            if(index < 0 || index >= users.size) throw IndexOutOfBoundsException()
+        if(users.remove(user)) {
 
             notifyItemRemoved(index)
 

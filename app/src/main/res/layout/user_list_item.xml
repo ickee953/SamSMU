@@ -9,12 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="@dimen/item_image_width"
-            android:layout_height="@dimen/item_image_width"
-            android:layout_marginTop="@dimen/content_margin_min"
-            android:src="@drawable/baseline_person_24"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/image_view_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_min">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="@dimen/item_image_width"
+                android:layout_height="@dimen/item_image_width"
+                android:contentDescription="@string/avatar_description"
+                android:src="@drawable/baseline_person_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/selection_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_check_circle_24"
+                android:background="@drawable/background_selected_circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/name"
@@ -22,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin_min"
             android:lines="1"
-            android:layout_toEndOf="@id/image_view"/>
+            android:layout_toEndOf="@id/image_view_container"/>
 
         <TextView
             android:id="@+id/email"
@@ -31,7 +53,7 @@
             android:layout_below="@+id/name"
             android:layout_margin="@dimen/content_margin_min"
             android:lines="1"
-            android:layout_toEndOf="@id/image_view"/>
+            android:layout_toEndOf="@id/image_view_container"/>
 
         <CheckBox
             android:id="@+id/favourite_btn"
@@ -43,13 +65,6 @@
             app:buttonTint="@android:color/darker_gray"/>
 
     </RelativeLayout>
-
-    <View
-        android:id="@+id/selection_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        android:background="@color/item_overlay" />
 
     <!-- just a divider -->
     <View android:background="@android:color/darker_gray"

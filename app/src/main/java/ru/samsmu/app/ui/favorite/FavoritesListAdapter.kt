@@ -74,7 +74,7 @@ class FavoritesListAdapter(
         var emailTextView: TextView = view.findViewById(R.id.email)
         var imageView: ImageView    = view.findViewById(R.id.image_view)
         var favoriteBtn: CheckBox   = view.findViewById(R.id.favourite_btn)
-        var overlay: View           = view.findViewById(R.id.selection_overlay)
+        var selection: View         = view.findViewById(R.id.selection_view)
 
         val imageLoader = ImageLoader.Builder(view.context)
             .memoryCachePolicy(CachePolicy.ENABLED)
@@ -105,9 +105,9 @@ class FavoritesListAdapter(
 
         selectionTracker?.let {
             if (it.isSelected(user.id)) {
-                holder.overlay.visibility = View.VISIBLE
+                holder.selection.visibility = View.VISIBLE
             } else {
-                holder.overlay.visibility = View.INVISIBLE
+                holder.selection.visibility = View.INVISIBLE
             }
         }
 

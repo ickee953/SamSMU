@@ -9,10 +9,8 @@
 package ru.samsmu.app.ui.favorite
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.CheckBox
@@ -70,8 +68,6 @@ class FavoritesListAdapter(
         }
     }
 
-    private var users: MutableList<User> = ArrayList()
-
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var nameTextView: TextView  = view.findViewById(R.id.name)
         var emailTextView: TextView = view.findViewById(R.id.email)
@@ -93,24 +89,18 @@ class FavoritesListAdapter(
     var selectionTracker: SelectionTracker<Long>? = null
 
     override fun getItemId(position: Int): Long {
-        if(position < 0 || position >= users.size) throw IndexOutOfBoundsException()
+        if(position < 0 || position >= items.size) throw IndexOutOfBoundsException()
 
-        return users[position].id
+        return items[position].id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
+    override fun getResourceLayoutId() = R.layout.user_list_item
 
-        return ItemViewHolder(userView)
-    }
-
-    override fun getItemCount(): Int {
-        return users.size
-    }
+    override fun createViewHolder(view: View) = ItemViewHolder(view)
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val user = users[position]
+        val user = items[position]
 
         holder as ItemViewHolder
 
@@ -141,39 +131,5 @@ class FavoritesListAdapter(
         holder.itemView.tag = user
 
         holder.itemView.setOnClickListener(onClickListener)
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun reload(dataset: Collection<User>?) {
-        if(setDataset(dataset)) notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun remove(user : User) : Boolean{
-
-        //get index of element
-        val index = users.indexOfFirst { it == user }
-
-        if(index < 0 || index >= users.size) throw IndexOutOfBoundsException()
-
-        if(users.remove(user)) {
-
-            notifyItemRemoved(index)
-
-            return true
-        }
-        return false
-    }
-
-    fun getDataset() = users
-
-    fun setDataset(dataset: Collection<User>?) : Boolean{
-        if(dataset != null) {
-            users.clear()
-            users.addAll(dataset)
-
-            return true
-        }
-        return false
     }
 }

@@ -11,7 +11,6 @@ package ru.samsmu.app.ui.user
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import ru.samsmu.app.data.model.User
 import androidx.recyclerview.widget.RecyclerView
@@ -21,13 +20,7 @@ import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
-import ru.samsmu.app.data.db.UserDao
-import ru.samsmu.app.data.db.SamSmuDB
-import android.app.Application
 import android.widget.CheckBox
-import android.widget.CompoundButton
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import ru.samsmu.app.ui.OnCheckedItemListener
 import ru.samsmu.app.ui.ReloadableAdapter
 
@@ -35,8 +28,6 @@ class UsersListAdapter(
     private val onClickListener: View.OnClickListener,
     private val onCheckedItemListener: OnCheckedItemListener<User>
 ): ReloadableAdapter<User>() {
-
-    private var users: MutableList<User> = ArrayList()
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var nameTextView: TextView      = view.findViewById(R.id.name)
@@ -51,19 +42,13 @@ class UsersListAdapter(
             .build()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
+    override fun getResourceLayoutId() = R.layout.user_list_item
 
-        return ItemViewHolder(userView)
-    }
-
-    override fun getItemCount(): Int {
-        return users.size
-    }
+    override fun createViewHolder(view: View) = ItemViewHolder(view)
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val user = users[position]
+        val user = items[position]
 
         holder as ItemViewHolder
 
@@ -93,14 +78,4 @@ class UsersListAdapter(
             }
         }
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun reload(dataset: Collection<User>?) {
-        if(dataset != null){
-            users.clear()
-            users.addAll(dataset)
-            notifyDataSetChanged()
-        }
-    }
-
 }

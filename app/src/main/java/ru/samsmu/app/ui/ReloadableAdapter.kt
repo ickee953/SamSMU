@@ -14,16 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class ReloadableAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+abstract class ReloadableAdapter<T>(
+    private val resId : Int
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     protected var items: MutableList<T> = ArrayList()
-
-    abstract fun getResourceLayoutId() : Int
 
     abstract fun createViewHolder( view: View) : RecyclerView.ViewHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(getResourceLayoutId(), parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(resId, parent, false)
 
         return createViewHolder( view )
     }

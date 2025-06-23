@@ -9,7 +9,6 @@
 package ru.samsmu.app.ui.user
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import ru.samsmu.app.data.model.User
@@ -25,9 +24,10 @@ import ru.samsmu.app.ui.OnCheckedItemListener
 import ru.samsmu.app.ui.ReloadableAdapter
 
 class UsersListAdapter(
+    resId : Int,
     private val onClickListener: View.OnClickListener,
     private val onCheckedItemListener: OnCheckedItemListener<User>
-): ReloadableAdapter<User>() {
+): ReloadableAdapter<User>(resId) {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var nameTextView: TextView      = view.findViewById(R.id.name)
@@ -41,8 +41,6 @@ class UsersListAdapter(
             .respectCacheHeaders(false)
             .build()
     }
-
-    override fun getResourceLayoutId() = R.layout.user_list_item
 
     override fun createViewHolder(view: View) = ItemViewHolder(view)
 

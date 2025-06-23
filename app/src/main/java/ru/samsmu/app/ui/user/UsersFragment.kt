@@ -47,7 +47,7 @@ class UsersFragment : Fragment(), Fetchable {
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        usersListAdapter = UsersListAdapter({ itemView ->
+        usersListAdapter = UsersListAdapter(R.layout.user_list_item, { itemView ->
             val user = itemView.tag as User
             val bundle = Bundle()
             bundle.putParcelable(

@@ -27,8 +27,9 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.ReloadableAdapter
 
 class FavoritesListAdapter(
+    resId : Int,
     private val onClickListener: View.OnClickListener
-): ReloadableAdapter<User>() {
+): ReloadableAdapter<User>(resId) {
 
     class DetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<Long>(){
 
@@ -93,8 +94,6 @@ class FavoritesListAdapter(
 
         return items[position].id
     }
-
-    override fun getResourceLayoutId() = R.layout.user_list_item
 
     override fun createViewHolder(view: View) = ItemViewHolder(view)
 

@@ -99,7 +99,7 @@ class FavoriteFragment : Fragment(), Fetchable {
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        listAdapter = FavoritesListAdapter { itemView ->
+        listAdapter = FavoritesListAdapter(R.layout.user_list_item) { itemView ->
             val user = itemView.tag as User
             val bundle = Bundle()
             bundle.putParcelable(

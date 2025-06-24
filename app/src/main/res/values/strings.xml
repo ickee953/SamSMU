@@ -34,4 +34,5 @@
     <string name="age">Возраст</string>
     <string name="option_delete">Удалить</string>
     <string name="avatar_description">avatar</string>
+    <string name="hint_search">Поиск...</string>
 </resources>

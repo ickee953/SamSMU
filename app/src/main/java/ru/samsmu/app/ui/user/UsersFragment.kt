@@ -14,9 +14,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import ru.samsmu.app.MainActivity
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
@@ -72,6 +77,17 @@ class UsersFragment : Fragment(), Fetchable {
         }
     }
 
+    private fun setupActionBar(){
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        (activity as AppCompatActivity).setupActionBarWithNavController(navController, AppBarConfiguration(navController.graph))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +96,8 @@ class UsersFragment : Fragment(), Fetchable {
 
         _binding = FragmentUsersBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        setupActionBar()
 
         binding.recyclerListView.adapter = usersListAdapter
 

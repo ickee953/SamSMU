@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
@@ -50,11 +54,26 @@ class UserDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_users, R.id.navigation_favorite
+            )
+        )
+
+        (activity as AppCompatActivity).setupActionBarWithNavController(navController, appBarConfiguration)
+
         user?.let {
 
             val userFavouriteProducer = UserFavouriteProducer(this, userViewModel)
 
-            binding.favouriteBtn.setOnClickListener { view ->
+            /*binding.favouriteBtn.setOnClickListener { view ->
 
                 if(it.isFavourite == 1){
                     userFavouriteProducer.onCheckedChanged(user, view, false)
@@ -62,7 +81,7 @@ class UserDetailsFragment : Fragment() {
                     userFavouriteProducer.onCheckedChanged(user, view,true)
                 }
 
-            }
+            }*/
         }
 
         return binding.root
@@ -89,13 +108,14 @@ class UserDetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(user: User){
-        binding.name.text    = "${user.firstName} ${user.lastName} ${user.maidenName}"
+        val title = "${user.firstName} ${user.lastName} ${user.maidenName}"
+        (activity as AppCompatActivity).supportActionBar?.title = title
         binding.email.text   = "${user.email}"
         binding.age.text     = "${resources.getString(R.string.age)}: ${user.age}"
         binding.phone.text   = "${user.phone}"
         binding.address.text = "${user.address}"
 
-        binding.favouriteBtn.isChecked = user.isFavourite == 1
+        //binding.favouriteBtn.isChecked = user.isFavourite == 1
 
         val imageLoader = ImageLoader.Builder(requireContext())
             .memoryCachePolicy(CachePolicy.ENABLED)

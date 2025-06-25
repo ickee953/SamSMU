@@ -18,7 +18,7 @@ abstract class ReloadableAdapter<T>(
     private val resId : Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    protected var items: MutableList<T> = ArrayList()
+    protected val items: MutableList<T> = ArrayList()
 
     abstract fun createViewHolder( view: View) : RecyclerView.ViewHolder
 

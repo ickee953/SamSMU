@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -44,14 +44,13 @@
                         android:layout_marginStart="@dimen/content_margin"
                         android:lines="1"
                         android:textSize="@dimen/details_title_text_size"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"/>-->
 
                     <TextView
                         android:id="@+id/age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/name"
-                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginTop="@dimen/content_margin"
                         android:layout_marginStart="@dimen/content_margin"
                         android:lines="1"/>
 
@@ -99,16 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            </com.google.android.material.appbar.MaterialToolbar>
 
             <ImageView
                 android:id="@+id/image_view"
@@ -118,11 +109,20 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/baseline_person_24" />
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/content_margin_min"
@@ -142,6 +142,6 @@
             android:button="@drawable/sl_favourite_24dp"
             app:buttonTint="@android:color/darker_gray"/>
 
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -104,6 +104,10 @@ data class User(
         return result
     }
 
+    override fun toString(): String {
+        return "$firstName $lastName $maidenName $email $phone $address $age"
+    }
+
     companion object CREATOR : Parcelable.Creator<User> {
 
         @TypeConverter

@@ -36,7 +36,7 @@
     <string name="avatar_description">avatar</string>
     <string name="hint_search">Поиск...</string>
     <string name="attention">Внимание</string>
-    <string name="deletion_part_1">Вы уверены что хотите удаалить</string>
+    <string name="deletion_part_1">Вы уверены что хотите удалить</string>
     <string name="deletion_part_2">записей?</string>
     <string name="dialog_button_yes">Да</string>
     <string name="dialog_button_no">Нет</string>

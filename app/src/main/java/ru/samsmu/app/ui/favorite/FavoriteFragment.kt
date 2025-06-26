@@ -10,6 +10,8 @@ package ru.samsmu.app.ui.favorite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
@@ -32,6 +34,8 @@ import androidx.recyclerview.selection.StorageStrategy
 import ru.samsmu.app.databinding.FragmentFavoriteBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
+import java.util.LinkedList
+import java.util.Locale
 
 class FavoriteFragment : Fragment(), Fetchable {
 
@@ -50,6 +54,8 @@ class FavoriteFragment : Fragment(), Fetchable {
     private lateinit var userViewModel : UserViewModel
 
     private lateinit var listAdapter : FavoritesListAdapter
+
+    private var usersList : Collection<User>? = null
 
     private var actionMode: ActionMode? = null
 
@@ -131,11 +137,13 @@ class FavoriteFragment : Fragment(), Fetchable {
         }
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
-            listAdapter.setDataset(savedInstanceState.getParcelableArrayList(ARG_LIST)!!)
+            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            listAdapter.setDataset(usersList)
         }
 
         setFragmentResultListener(ARG_FAVOURITE_LIST_CHANGED) { _, _->
             fetch({ items ->
+                usersList = items
                 listAdapter.reload(items as ArrayList)
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
@@ -158,6 +166,36 @@ class FavoriteFragment : Fragment(), Fetchable {
         initSelectionTracker()
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.searchEditText.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                filter(s.toString())
+            }
+        })
+    }
+
+    fun filter(text: String?) {
+        usersList?.let {
+            val filtered: MutableList<User> = LinkedList()
+            for (user in it) {
+                if (user.toString().lowercase(Locale.getDefault())
+                        .contains(text?.lowercase(Locale.getDefault()).toString())
+                ) {
+                    filtered.add(user)
+                }
+            }
+            listAdapter.update(filtered)
+        }
     }
 
     private fun initSelectionTracker(){
@@ -193,10 +231,12 @@ class FavoriteFragment : Fragment(), Fetchable {
         super.onViewStateRestored(savedInstanceState)
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
-            listAdapter.reload(savedInstanceState.getParcelableArrayList(ARG_LIST)!!)
+            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            listAdapter.reload(usersList)
         } else {
             fetch({ items ->
-                listAdapter.reload(items as ArrayList)
+                usersList =  items
+                listAdapter.reload(usersList as ArrayList)
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
             })
@@ -205,7 +245,7 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(ARG_LIST, listAdapter.getDataset() as ArrayList<User>)
+        outState.putParcelableArrayList(ARG_LIST, usersList as ArrayList<User>)
     }
 
     override fun onDestroyView() {

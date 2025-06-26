@@ -10,6 +10,8 @@ package ru.samsmu.app.ui.user
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,11 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
+import ru.samsmu.app.ui.favorite.FavoriteFragment
+import ru.samsmu.app.ui.favorite.FavoriteFragment.Companion
 import ru.samsmu.app.ui.favorite.UserFavouriteCheckedProvider
+import java.util.LinkedList
+import java.util.Locale
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -40,7 +46,8 @@ class UsersFragment : Fragment(), Fetchable {
 
     private lateinit var usersListAdapter : UsersListAdapter
 
-    private var list : MutableList<User> = ArrayList()
+    private var usersList : Collection<User>? = null
+    //private var list : MutableList<User> = ArrayList()
 
     companion object {
         const val ARG_LIST = "users_list"
@@ -64,6 +71,7 @@ class UsersFragment : Fragment(), Fetchable {
             override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
                 super.onCheckedChanged(itemObject, view, isChecked)
                 //update list item element
+                val list = usersListAdapter.getDataset()
                 list.find { it == itemObject }?.let {
                     if(isChecked) it.isFavourite = 1
                     else it.isFavourite = 0
@@ -72,7 +80,8 @@ class UsersFragment : Fragment(), Fetchable {
         })
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
-            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            usersListAdapter.setDataset(usersList)
         }
     }
 
@@ -103,29 +112,41 @@ class UsersFragment : Fragment(), Fetchable {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.searchEditText.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                filter(s.toString())
+            }
+        })
+    }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        if(savedInstanceState == null){
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
+            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            usersListAdapter.reload(usersList)
+        } else {
             fetch({ items ->
-                list = items as ArrayList
-                usersListAdapter.reload(list)
-                //todo hide progress bar
+                usersList =  items
+                usersListAdapter.reload(usersList as ArrayList)
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-                //todo hide progress bar
-            }, {
-                //todo show progress bar
             })
-        } else if(savedInstanceState.containsKey(ARG_LIST)){
-            list = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
-            usersListAdapter.reload(list)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(ARG_LIST, list as ArrayList<User>)
+        outState.putParcelableArrayList(ARG_LIST, usersList as ArrayList<User>)
     }
 
     override fun onDestroyView() {
@@ -147,6 +168,20 @@ class UsersFragment : Fragment(), Fetchable {
                     Status.LOADING -> loading()
                 }
             }
+        }
+    }
+
+    fun filter(text: String?) {
+        usersList?.let {
+            val filtered: MutableList<User> = LinkedList()
+            for (user in it) {
+                if (user.toString().lowercase(Locale.getDefault())
+                        .contains(text?.lowercase(Locale.getDefault()).toString())
+                ) {
+                    filtered.add(user)
+                }
+            }
+            usersListAdapter.update(filtered)
         }
     }
 }

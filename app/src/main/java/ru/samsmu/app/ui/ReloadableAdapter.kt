@@ -13,12 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.samsmu.app.data.model.User
 
 abstract class ReloadableAdapter<T>(
     private val resId : Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    protected val items: MutableList<T> = ArrayList()
+    protected var items: MutableList<T> = ArrayList()
 
     abstract fun createViewHolder( view: View) : RecyclerView.ViewHolder
 
@@ -64,5 +65,11 @@ abstract class ReloadableAdapter<T>(
             return true
         }
         return false
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun update(items : List<T>){
+        this.items = items.toMutableList()
+        notifyDataSetChanged()
     }
 }

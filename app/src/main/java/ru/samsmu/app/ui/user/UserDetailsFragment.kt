@@ -54,21 +54,6 @@ class UserDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
-        val navHostFragment =
-            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-
-        val navController = navHostFragment.navController
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_users, R.id.navigation_favorite
-            )
-        )
-
-        (activity as AppCompatActivity).setupActionBarWithNavController(navController, appBarConfiguration)
-
         user?.let {
 
             val userFavouriteCheckedProvider = UserFavouriteCheckedProvider(this, userViewModel)
@@ -87,8 +72,27 @@ class UserDetailsFragment : Fragment() {
         return binding.root
     }
 
+    private fun setupActionBar(){
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_users, R.id.navigation_favorite
+            )
+        )
+
+        (activity as AppCompatActivity).setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupActionBar()
 
         user?.let { updateUI(it) }
     }

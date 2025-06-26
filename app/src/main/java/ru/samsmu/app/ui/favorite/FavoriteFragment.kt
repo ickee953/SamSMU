@@ -159,8 +159,6 @@ class FavoriteFragment : Fragment(), Fetchable {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
         binding.recyclerListView.adapter = listAdapter
 
         initSelectionTracker()
@@ -170,6 +168,8 @@ class FavoriteFragment : Fragment(), Fetchable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         binding.searchEditText.addTextChangedListener( object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

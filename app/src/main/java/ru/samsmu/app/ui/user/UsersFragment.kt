@@ -85,7 +85,7 @@ class UsersFragment : Fragment(), Fetchable {
         }
     }
 
-    private fun setupActionBar(){
+    /*private fun setupActionBar(){
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         val navHostFragment =
@@ -94,7 +94,7 @@ class UsersFragment : Fragment(), Fetchable {
         val navController = navHostFragment.navController
 
         (activity as AppCompatActivity).setupActionBarWithNavController(navController, AppBarConfiguration(navController.graph))
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -105,8 +105,6 @@ class UsersFragment : Fragment(), Fetchable {
         _binding = FragmentUsersBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setupActionBar()
-
         binding.recyclerListView.adapter = usersListAdapter
 
         return root
@@ -114,6 +112,9 @@ class UsersFragment : Fragment(), Fetchable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //setupActionBar()
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         binding.searchEditText.addTextChangedListener( object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

@@ -20,19 +20,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.favorite.FavoriteFragment
-import ru.samsmu.app.ui.favorite.FavoriteFragment.Companion
+import ru.samsmu.app.ui.SearchableFilterProvider
+import ru.samsmu.app.ui.SearchableFilterProviderImp
 import ru.samsmu.app.ui.favorite.UserFavouriteCheckedProvider
-import java.util.LinkedList
-import java.util.Locale
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -46,8 +41,9 @@ class UsersFragment : Fragment(), Fetchable {
 
     private lateinit var usersListAdapter : UsersListAdapter
 
+    private lateinit var searchFilterProvider : SearchableFilterProvider<User>
+
     private var usersList : Collection<User>? = null
-    //private var list : MutableList<User> = ArrayList()
 
     companion object {
         const val ARG_LIST = "users_list"
@@ -79,22 +75,13 @@ class UsersFragment : Fragment(), Fetchable {
             }
         })
 
+        searchFilterProvider = SearchableFilterProviderImp()
+
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
             usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
             usersListAdapter.setDataset(usersList)
         }
     }
-
-    /*private fun setupActionBar(){
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
-        val navHostFragment =
-            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-
-        val navController = navHostFragment.navController
-
-        (activity as AppCompatActivity).setupActionBarWithNavController(navController, AppBarConfiguration(navController.graph))
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,7 +100,6 @@ class UsersFragment : Fragment(), Fetchable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setupActionBar()
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         binding.searchEditText.addTextChangedListener( object: TextWatcher {
@@ -124,9 +110,10 @@ class UsersFragment : Fragment(), Fetchable {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                filter(s.toString())
+                applySearchFilter(s.toString())
             }
         })
+        applySearchFilter(binding.searchEditText.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -135,10 +122,12 @@ class UsersFragment : Fragment(), Fetchable {
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
             usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
             usersListAdapter.reload(usersList)
+            applySearchFilter(binding.searchEditText.text.toString())
         } else {
             fetch({ items ->
                 usersList =  items
                 usersListAdapter.reload(usersList as ArrayList)
+                applySearchFilter(binding.searchEditText.text.toString())
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
             })
@@ -172,16 +161,8 @@ class UsersFragment : Fragment(), Fetchable {
         }
     }
 
-    fun filter(text: String?) {
-        usersList?.let {
-            val filtered: MutableList<User> = LinkedList()
-            for (user in it) {
-                if (user.toString().lowercase(Locale.getDefault())
-                        .contains(text?.lowercase(Locale.getDefault()).toString())
-                ) {
-                    filtered.add(user)
-                }
-            }
+    private fun applySearchFilter(text : String?) {
+        searchFilterProvider.filter(usersList, text) { filtered->
             usersListAdapter.update(filtered)
         }
     }

@@ -34,8 +34,9 @@ import androidx.recyclerview.selection.StorageStrategy
 import ru.samsmu.app.databinding.FragmentFavoriteBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import java.util.LinkedList
-import java.util.Locale
+import ru.samsmu.app.ui.SearchableFilterProvider
+import ru.samsmu.app.ui.SearchableFilterProviderImp
+import ru.samsmu.app.ui.showConfirmDialog
 
 class FavoriteFragment : Fragment(), Fetchable {
 
@@ -52,6 +53,8 @@ class FavoriteFragment : Fragment(), Fetchable {
     private val binding get() = _binding!!
 
     private lateinit var userViewModel : UserViewModel
+
+    private lateinit var searchProvider : SearchableFilterProvider<User>
 
     private lateinit var listAdapter : FavoritesListAdapter
 
@@ -79,16 +82,11 @@ class FavoriteFragment : Fragment(), Fetchable {
             return when (item.itemId) {
                 R.id.option_delete -> {
 
-                    val deletionMessage = "${resources.getString(R.string.deletion_part_1)} " +
-                            "${tracker?.selection?.size()}" +
-                            " ${resources.getString(R.string.deletion_part_2)}"
-
-                    val builder = activity?.let { AlertDialog.Builder(it) }
-
-                    builder?.setTitle(R.string.attention)
-                    builder?.setMessage(deletionMessage)
-
-                    builder?.setPositiveButton(R.string.dialog_button_yes) { _, _ ->
+                    showConfirmDialog(
+                        requireContext(),
+                        R.string.delete_dialog_title,
+                        R.string.deletion_message
+                    ) {
                         tracker?.selection?.forEach { userId ->
                             val user = listAdapter.getDataset().find { it.id == userId}
                             if (user != null) {
@@ -101,12 +99,6 @@ class FavoriteFragment : Fragment(), Fetchable {
                         }
                         mode.finish()
                     }
-
-                    builder?.setNegativeButton(R.string.dialog_button_no) { _, _ ->
-
-                    }
-
-                    builder?.show()
 
                     true
                 }
@@ -135,6 +127,8 @@ class FavoriteFragment : Fragment(), Fetchable {
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
         }
+
+        searchProvider = SearchableFilterProviderImp()
 
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
             usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
@@ -179,23 +173,40 @@ class FavoriteFragment : Fragment(), Fetchable {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                filter(s.toString())
+                applySearchFilter(s.toString())
             }
         })
+
+        applySearchFilter(binding.searchEditText.text.toString())
     }
 
-    fun filter(text: String?) {
-        usersList?.let {
-            val filtered: MutableList<User> = LinkedList()
-            for (user in it) {
-                if (user.toString().lowercase(Locale.getDefault())
-                        .contains(text?.lowercase(Locale.getDefault()).toString())
-                ) {
-                    filtered.add(user)
-                }
-            }
-            listAdapter.update(filtered)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
+            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
+            listAdapter.reload(usersList)
+            applySearchFilter(binding.searchEditText.text.toString())
+        } else {
+            fetch({ items ->
+                usersList =  items
+                listAdapter.reload(usersList as ArrayList)
+                applySearchFilter(binding.searchEditText.text.toString())
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            })
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(ARG_LIST, usersList as ArrayList<User>)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initSelectionTracker(){
@@ -227,33 +238,6 @@ class FavoriteFragment : Fragment(), Fetchable {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_LIST) ){
-            usersList = savedInstanceState.getParcelableArrayList(ARG_LIST)!!
-            listAdapter.reload(usersList)
-        } else {
-            fetch({ items ->
-                usersList =  items
-                listAdapter.reload(usersList as ArrayList)
-            }, { message ->
-                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-            })
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(ARG_LIST, usersList as ArrayList<User>)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
     override fun fetch(
         success: (List<User>) -> Unit,
         error: (String?) -> Unit,
@@ -267,6 +251,12 @@ class FavoriteFragment : Fragment(), Fetchable {
                     Status.LOADING -> loading()
                 }
             }
+        }
+    }
+
+    private fun applySearchFilter(text : String?) {
+        searchProvider.filter(usersList, text) { filtered->
+            listAdapter.update(filtered)
         }
     }
 }

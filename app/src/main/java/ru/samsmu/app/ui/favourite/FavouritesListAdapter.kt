@@ -6,7 +6,7 @@
  * Written by Panov Vitaly 9 Jun 2025
  */
 
-package ru.samsmu.app.ui.favorite
+package ru.samsmu.app.ui.favourite
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
@@ -24,9 +24,9 @@ import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
-import ru.samsmu.app.ui.ReloadableAdapter
+import ru.samsmu.app.core.ReloadableAdapter
 
-class FavoritesListAdapter(
+class FavouritesListAdapter(
     resId : Int,
     private val onClickListener: View.OnClickListener
 ): ReloadableAdapter<User>(resId) {

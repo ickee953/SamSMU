@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="ru.samsmu.app.ui.favorite.FavoriteFragment"
+        android:name="ru.samsmu.app.ui.favourite.FavouriteFragment"
         android:label="@string/title_favorite"
-        tools:layout="@layout/fragment_favorite">
+        tools:layout="@layout/fragment_favourite">
 
         <action
             android:id="@+id/show_user_details"

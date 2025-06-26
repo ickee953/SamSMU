@@ -6,14 +6,13 @@
  * Written by Panov Vitaly 9 Jun 2025
  */
 
-package ru.samsmu.app.ui
+package ru.samsmu.app.core
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.samsmu.app.data.model.User
 
 abstract class ReloadableAdapter<T>(
     private val resId : Int

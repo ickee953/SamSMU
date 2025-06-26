@@ -24,10 +24,10 @@ import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
-import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.SearchableFilterProvider
-import ru.samsmu.app.ui.SearchableFilterProviderImp
-import ru.samsmu.app.ui.favorite.UserFavouriteCheckedProvider
+import ru.samsmu.app.core.Fetchable
+import ru.samsmu.app.core.SearchableFilterProvider
+import ru.samsmu.app.core.SearchableFilterProviderImp
+import ru.samsmu.app.core.FragmentFavouriteCheckedProvider
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -63,7 +63,7 @@ class UsersFragment : Fragment(), Fetchable {
             )
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
-        }, object : UserFavouriteCheckedProvider(this, userViewModel) {
+        }, object : FragmentFavouriteCheckedProvider<User>(this, userViewModel) {
             override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
                 super.onCheckedChanged(itemObject, view, isChecked)
                 //update list item element
@@ -136,7 +136,9 @@ class UsersFragment : Fragment(), Fetchable {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(ARG_LIST, usersList as ArrayList<User>)
+        usersList?.let {
+            outState.putParcelableArrayList(ARG_LIST, it as ArrayList<User>)
+        }
     }
 
     override fun onDestroyView() {

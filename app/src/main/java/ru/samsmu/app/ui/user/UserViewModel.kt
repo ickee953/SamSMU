@@ -20,8 +20,9 @@ import ru.samsmu.app.data.db.SamSmuDB
 import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.data.model.UsersList
+import ru.samsmu.app.core.FavouritableLiveData
 
-class UserViewModel(application: Application) : AndroidViewModel(application) {
+class UserViewModel(application: Application) : AndroidViewModel(application), FavouritableLiveData<User> {
 
     companion object {
         const val DEFAULT_ERR_MSG = "Error Occured!"
@@ -64,13 +65,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         emit(Resource.success(data = favorites))
     }
 
-    fun addFavourite( user: User ) = liveData (Dispatchers.IO) {
-        userDao.create(user)
-        emit(Resource.success(data = user))
+    override fun addFavourite(itemObject: User ) = liveData (Dispatchers.IO) {
+        userDao.create(itemObject)
+        emit(Resource.success(data = itemObject))
     }
 
-    fun removeFavourite( user: User ) = liveData (Dispatchers.IO) {
-        userDao.delete(user)
-        emit(Resource.success(data = user))
+    override fun removeFavourite(itemObject: User ) = liveData (Dispatchers.IO) {
+        userDao.delete(itemObject)
+        emit(Resource.success(data = itemObject))
     }
 }

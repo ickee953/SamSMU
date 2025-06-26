@@ -6,7 +6,7 @@
  * Written by Panov Vitaly 19 Jun 2025
  */
 
-package ru.samsmu.app.ui.favorite
+package ru.samsmu.app.core
 
 import android.annotation.SuppressLint
 import android.view.View
@@ -15,22 +15,20 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import ru.samsmu.app.data.Status
-import ru.samsmu.app.data.model.User
-import ru.samsmu.app.ui.OnCheckedItemListener
-import ru.samsmu.app.ui.user.UserViewModel
+import ru.samsmu.app.ui.favourite.FavouriteFragment
 
-open class UserFavouriteCheckedProvider(
+open class FragmentFavouriteCheckedProvider<T>(
     private val fragment: Fragment,
-    private val viewModel: UserViewModel
-) : OnCheckedItemListener<User> {
+    private val favouritableLiveData: FavouritableLiveData<T>
+) : OnCheckedItemListener<T>, FavouritesProvider<T> {
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
+    override fun onCheckedChanged(itemObject: T?, view: View, isChecked: Boolean) {
         if (itemObject != null) {
             if(isChecked) {
                 addToFavourites( itemObject, { result ->
                     fragment.setFragmentResult(
-                        FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                        bundleOf(FavoriteFragment.ARG_USER to result)
+                        FavouriteFragment.ARG_FAVOURITE_LIST_CHANGED,
+                        bundleOf(FavouriteFragment.ARG_USER to result)
                     )
 
                     view.isEnabled = true
@@ -46,8 +44,8 @@ open class UserFavouriteCheckedProvider(
             } else {
                 removeFromFavourites( itemObject, { result ->
                     fragment.setFragmentResult(
-                        FavoriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                        bundleOf(FavoriteFragment.ARG_USER to result)
+                        FavouriteFragment.ARG_FAVOURITE_LIST_CHANGED,
+                        bundleOf(FavouriteFragment.ARG_USER to result)
                     )
 
                     view.isEnabled = true
@@ -64,13 +62,13 @@ open class UserFavouriteCheckedProvider(
         }
     }
 
-    fun addToFavourites(
-        itemObject: User,
-        success: (User) -> Unit,
+    override fun addToFavourites(
+        itemObject: T,
+        success: (T) -> Unit,
         error: (String?) -> Unit,
         loading: () -> Unit
     ){
-        viewModel.addFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
+        favouritableLiveData.addFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
             res?.let {
                 when(it.status){
                     Status.SUCCESS -> {
@@ -85,13 +83,13 @@ open class UserFavouriteCheckedProvider(
         }
     }
 
-    fun removeFromFavourites(
-        itemObject: User,
-        success: (User) -> Unit,
+    override fun removeFromFavourites(
+        itemObject: T,
+        success: (T) -> Unit,
         error: (String?) -> Unit,
         loading: () -> Unit
     ){
-        viewModel.removeFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
+        favouritableLiveData.removeFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
             res?.let {
                 when(it.status){
                     Status.SUCCESS -> {

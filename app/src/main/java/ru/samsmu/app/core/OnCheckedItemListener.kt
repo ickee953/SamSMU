@@ -1,4 +1,4 @@
-package ru.samsmu.app.ui
+package ru.samsmu.app.core
 
 import android.view.View
 

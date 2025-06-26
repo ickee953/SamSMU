@@ -6,12 +6,11 @@
  * Written by Panov Vitaly 26 Jun 2025
  */
 
-package ru.samsmu.app.ui
+package ru.samsmu.app.core
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import ru.samsmu.app.R
-
 
 fun showConfirmDialog(
     context: Context,

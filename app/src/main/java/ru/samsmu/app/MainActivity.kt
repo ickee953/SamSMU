@@ -12,12 +12,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.content.Intent
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import ru.samsmu.app.databinding.ActivityMainBinding
 import androidx.navigation.ui.navigateUp
@@ -38,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setSupportActionBar(binding.toolbar)
-
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
 
@@ -51,9 +50,28 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        //setupActionBarWithNavController(navController, appBarConfiguration)
-
         binding.navView.setupWithNavController(navController)
+
+        addMenuProvider( object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.toolbar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_settings -> {
+                        //start settings activity
+                        val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+
+                        startActivity(intent)
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+        } )
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -70,29 +88,4 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                val intent = Intent(
-                    this,
-                    SettingsActivity::class.java
-                )
-
-                startActivity(intent)
-
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }*/
 }

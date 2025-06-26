@@ -73,7 +73,7 @@ class UserDetailsFragment : Fragment() {
 
             val userFavouriteProducer = UserFavouriteProducer(this, userViewModel)
 
-            /*binding.favouriteBtn.setOnClickListener { view ->
+            binding.favouriteBtn.setOnClickListener { view ->
 
                 if(it.isFavourite == 1){
                     userFavouriteProducer.onCheckedChanged(user, view, false)
@@ -81,7 +81,7 @@ class UserDetailsFragment : Fragment() {
                     userFavouriteProducer.onCheckedChanged(user, view,true)
                 }
 
-            }*/
+            }
         }
 
         return binding.root
@@ -115,7 +115,7 @@ class UserDetailsFragment : Fragment() {
         binding.phone.text   = "${user.phone}"
         binding.address.text = "${user.address}"
 
-        //binding.favouriteBtn.isChecked = user.isFavourite == 1
+        binding.favouriteBtn.isChecked = user.isFavourite == 1
 
         val imageLoader = ImageLoader.Builder(requireContext())
             .memoryCachePolicy(CachePolicy.ENABLED)

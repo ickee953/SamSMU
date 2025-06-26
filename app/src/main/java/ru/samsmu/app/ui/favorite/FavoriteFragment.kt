@@ -16,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -71,17 +72,35 @@ class FavoriteFragment : Fragment(), Fetchable {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             return when (item.itemId) {
                 R.id.option_delete -> {
-                    tracker?.selection?.forEach { userId ->
-                        val user = listAdapter.getDataset().find { it.id == userId}
-                        if (user != null) {
-                            userViewModel.removeFavourite(user).observe(viewLifecycleOwner) { res ->
-                                if(res.status == Status.SUCCESS) {
-                                    listAdapter.remove(user)
+
+                    val deletionMessage = "${resources.getString(R.string.deletion_part_1)} " +
+                            "${tracker?.selection?.size()}" +
+                            " ${resources.getString(R.string.deletion_part_2)}"
+
+                    val builder = activity?.let { AlertDialog.Builder(it) }
+
+                    builder?.setTitle(R.string.attention)
+                    builder?.setMessage(deletionMessage)
+
+                    builder?.setPositiveButton(R.string.dialog_button_yes) { _, _ ->
+                        tracker?.selection?.forEach { userId ->
+                            val user = listAdapter.getDataset().find { it.id == userId}
+                            if (user != null) {
+                                userViewModel.removeFavourite(user).observe(viewLifecycleOwner) { res ->
+                                    if(res.status == Status.SUCCESS) {
+                                        listAdapter.remove(user)
+                                    }
                                 }
                             }
                         }
+                        mode.finish()
                     }
-                    mode.finish()
+
+                    builder?.setNegativeButton(R.string.dialog_button_no) { _, _ ->
+
+                    }
+
+                    builder?.show()
 
                     true
                 }

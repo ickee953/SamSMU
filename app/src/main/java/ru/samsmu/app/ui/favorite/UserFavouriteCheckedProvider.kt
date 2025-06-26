@@ -19,7 +19,7 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.OnCheckedItemListener
 import ru.samsmu.app.ui.user.UserViewModel
 
-open class UserFavouriteProducer(
+open class UserFavouriteCheckedProvider(
     private val fragment: Fragment,
     private val viewModel: UserViewModel
 ) : OnCheckedItemListener<User> {

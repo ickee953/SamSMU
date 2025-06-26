@@ -17,7 +17,7 @@ import coil.request.CachePolicy
 import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
-import ru.samsmu.app.ui.favorite.UserFavouriteProducer
+import ru.samsmu.app.ui.favorite.UserFavouriteCheckedProvider
 
 class UserDetailsFragment : Fragment() {
 
@@ -71,14 +71,14 @@ class UserDetailsFragment : Fragment() {
 
         user?.let {
 
-            val userFavouriteProducer = UserFavouriteProducer(this, userViewModel)
+            val userFavouriteCheckedProvider = UserFavouriteCheckedProvider(this, userViewModel)
 
             binding.favouriteBtn.setOnClickListener { view ->
 
                 if(it.isFavourite == 1){
-                    userFavouriteProducer.onCheckedChanged(user, view, false)
+                    userFavouriteCheckedProvider.onCheckedChanged(user, view, false)
                 } else {
-                    userFavouriteProducer.onCheckedChanged(user, view,true)
+                    userFavouriteCheckedProvider.onCheckedChanged(user, view,true)
                 }
 
             }

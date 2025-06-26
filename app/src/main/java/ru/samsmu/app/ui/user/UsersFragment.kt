@@ -21,13 +21,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import ru.samsmu.app.MainActivity
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.ui.Fetchable
-import ru.samsmu.app.ui.favorite.UserFavouriteProducer
+import ru.samsmu.app.ui.favorite.UserFavouriteCheckedProvider
 
 class UsersFragment : Fragment(), Fetchable {
 
@@ -61,7 +60,7 @@ class UsersFragment : Fragment(), Fetchable {
             )
             itemView.findNavController()
                 .navigate(R.id.show_user_details, bundle)
-        }, object : UserFavouriteProducer(this, userViewModel) {
+        }, object : UserFavouriteCheckedProvider(this, userViewModel) {
             override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
                 super.onCheckedChanged(itemObject, view, isChecked)
                 //update list item element

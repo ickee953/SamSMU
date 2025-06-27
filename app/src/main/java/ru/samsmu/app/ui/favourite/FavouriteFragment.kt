@@ -9,6 +9,7 @@
 package ru.samsmu.app.ui.favourite
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,9 +30,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.databinding.FragmentFavouriteBinding
 import ru.samsmu.app.R
+import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.core.adapters.ActionListAdapter
 import ru.samsmu.app.core.fragments.ActionListFragment
 import ru.samsmu.app.core.showConfirmDialog
+import ru.samsmu.app.ui.menu.MainMenuProvider
 
 class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
 
@@ -40,6 +43,15 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    /*private val mainMenuProvider = object : MainMenuProvider(){
+        override fun actionMenuSettings() {
+            //start settings activity
+            val intent = Intent(requireActivity(), SettingsActivity::class.java)
+
+            startActivity(intent)
+        }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +117,8 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
 
         binding.recyclerListView.adapter = listAdapter
 
+        //requireActivity().addMenuProvider(mainMenuProvider)
+
         return root
     }
 
@@ -154,6 +168,8 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
     }
 
     override fun onDestroyView() {
+        //requireActivity().removeMenuProvider(mainMenuProvider)
+
         super.onDestroyView()
         _binding = null
     }

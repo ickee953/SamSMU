@@ -1,3 +1,11 @@
+/**
+ * © Panov Vitaly 2025 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Panov Vitaly 27 Jun 2025
+ */
+
 package ru.samsmu.app.ui.user
 
 import android.annotation.SuppressLint
@@ -5,6 +13,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +26,8 @@ import coil.request.CachePolicy
 import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
-import ru.samsmu.app.core.providers.FragmentFavouriteCheckedProvider
+import ru.samsmu.app.ui.menu.DetailsMenuProvider
+import ru.samsmu.app.ui.menu.MenuProvided
 
 class UserDetailsFragment : Fragment() {
 
@@ -28,6 +38,13 @@ class UserDetailsFragment : Fragment() {
     private lateinit var userViewModel : UserViewModel
 
     private var user: User? = null
+
+    private val detailsMenuProvider = object : DetailsMenuProvider(){
+        override fun actionMenuFavourite(){
+            Toast.makeText(requireContext(), R.string.added_to_favourites, Toast.LENGTH_LONG).show()
+            //Toast.makeText(requireContext(), R.string.removed_from_favourites, Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +71,7 @@ class UserDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
-        user?.let {
+        /*user?.let {
 
             val fragmentFavouriteCheckedProvider = FragmentFavouriteCheckedProvider(this, userViewModel)
 
@@ -67,7 +84,7 @@ class UserDetailsFragment : Fragment() {
                 }
 
             }
-        }
+        }*/
 
         return binding.root
     }
@@ -95,6 +112,26 @@ class UserDetailsFragment : Fragment() {
         setupActionBar()
 
         user?.let { updateUI(it) }
+
+        with(requireActivity()){
+            if( this is MenuProvided ){
+                val mainMenuProvider = (this as MenuProvided).getMenuProvider()
+                removeMenuProvider(mainMenuProvider)
+            }
+            addMenuProvider(detailsMenuProvider)
+        }
+    }
+
+    override fun onDestroyView() {
+        with(requireActivity()){
+            removeMenuProvider(detailsMenuProvider)
+            if( this is MenuProvided ){
+                val mainMenuProvider = (this as MenuProvided).getMenuProvider()
+                addMenuProvider(mainMenuProvider)
+            }
+        }
+
+        super.onDestroyView()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

@@ -9,10 +9,7 @@
 package ru.samsmu.app
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.content.Intent
-import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
@@ -22,8 +19,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import ru.samsmu.app.databinding.ActivityMainBinding
 import androidx.navigation.ui.navigateUp
+import ru.samsmu.app.ui.menu.MainMenuProvider
+import ru.samsmu.app.ui.menu.MenuProvided
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MenuProvided {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -32,6 +31,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     private lateinit var navHostFragment: NavHostFragment
+
+    private val mainMenuProvider = object : MainMenuProvider(){
+        override fun actionMenuSettings() {
+            //start settings activity
+            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+
+            startActivity(intent)
+        }
+    }
+
+    override fun getMenuProvider(): MenuProvider {
+        return mainMenuProvider
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,26 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setupWithNavController(navController)
 
-        addMenuProvider( object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.toolbar_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_settings -> {
-                        //start settings activity
-                        val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-
-                        startActivity(intent)
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-        } )
+        addMenuProvider(mainMenuProvider)
     }
 
     override fun onSupportNavigateUp(): Boolean {

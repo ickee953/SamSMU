@@ -6,12 +6,12 @@
  * Written by Panov Vitaly 26 Jun 2025
  */
 
-package ru.samsmu.app.core
+package ru.samsmu.app.core.providers
 
 import androidx.lifecycle.LiveData
 import ru.samsmu.app.data.Resource
 
-interface FavouritableLiveData<T> {
+interface FavouritableLiveDataProvider<T> {
 
     fun addFavourite( itemObject: T) : LiveData<Resource<T>>
 

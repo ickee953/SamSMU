@@ -20,7 +20,7 @@ import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
-import ru.samsmu.app.core.fragments.ActionListAdapter
+import ru.samsmu.app.core.adapters.ActionListAdapter
 
 class FavouritesListAdapter(
     resId : Int,

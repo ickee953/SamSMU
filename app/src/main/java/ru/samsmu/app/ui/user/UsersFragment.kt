@@ -23,8 +23,8 @@ import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
-import ru.samsmu.app.core.FragmentFavouriteCheckedProvider
-import ru.samsmu.app.core.ReloadableAdapter
+import ru.samsmu.app.core.providers.FragmentFavouriteCheckedProvider
+import ru.samsmu.app.core.adapters.ReloadableAdapter
 import ru.samsmu.app.core.fragments.ListFragment
 
 class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {

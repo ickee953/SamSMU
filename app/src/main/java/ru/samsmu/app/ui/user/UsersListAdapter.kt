@@ -21,7 +21,7 @@ import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import android.widget.CheckBox
 import ru.samsmu.app.core.OnCheckedItemListener
-import ru.samsmu.app.core.ReloadableAdapter
+import ru.samsmu.app.core.adapters.ReloadableAdapter
 
 class UsersListAdapter(
     resId : Int,

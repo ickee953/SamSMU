@@ -15,6 +15,7 @@ import android.view.View
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
+import ru.samsmu.app.core.adapters.ActionListAdapter
 
 abstract class ActionListFragment<T : SelectableItem, A : ActionListAdapter<T>> : ListFragment<T, A>() {
 

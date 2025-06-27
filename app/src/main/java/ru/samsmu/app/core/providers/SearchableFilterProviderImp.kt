@@ -6,7 +6,7 @@
  * Written by Panov Vitaly 26 Jun 2025
  */
 
-package ru.samsmu.app.core
+package ru.samsmu.app.core.providers
 
 import java.util.LinkedList
 import java.util.Locale

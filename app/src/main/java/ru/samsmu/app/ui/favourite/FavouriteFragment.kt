@@ -29,7 +29,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.databinding.FragmentFavouriteBinding
 import ru.samsmu.app.R
-import ru.samsmu.app.core.fragments.ActionListAdapter
+import ru.samsmu.app.core.adapters.ActionListAdapter
 import ru.samsmu.app.core.fragments.ActionListFragment
 import ru.samsmu.app.core.showConfirmDialog
 

@@ -20,9 +20,10 @@ import ru.samsmu.app.data.db.SamSmuDB
 import ru.samsmu.app.data.db.UserDao
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.data.model.UsersList
-import ru.samsmu.app.core.FavouritableLiveData
+import ru.samsmu.app.core.providers.FavouritableLiveDataProvider
 
-class UserViewModel(application: Application) : AndroidViewModel(application), FavouritableLiveData<User> {
+class UserViewModel(application: Application) : AndroidViewModel(application),
+    FavouritableLiveDataProvider<User> {
 
     companion object {
         const val DEFAULT_ERR_MSG = "Error Occured!"

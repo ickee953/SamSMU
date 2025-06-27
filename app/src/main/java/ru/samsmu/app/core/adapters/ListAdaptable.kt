@@ -6,7 +6,7 @@
  * Written by Panov Vitaly 27 Jun 2025
  */
 
-package ru.samsmu.app.core.fragments
+package ru.samsmu.app.core.adapters
 
 interface ListAdaptable<T> {
 

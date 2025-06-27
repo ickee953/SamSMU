@@ -6,7 +6,7 @@
  * Written by Panov Vitaly 9 Jun 2025
  */
 
-package ru.samsmu.app.core
+package ru.samsmu.app.core.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

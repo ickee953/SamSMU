@@ -6,9 +6,9 @@
  * Written by Panov Vitaly 26 Jun 2025
  */
 
-package ru.samsmu.app.core
+package ru.samsmu.app.core.providers
 
-interface FavouritesProvider<T> {
+interface FavourableCallbackProvider<T> {
 
     fun addToFavourites(
         itemObject: T,

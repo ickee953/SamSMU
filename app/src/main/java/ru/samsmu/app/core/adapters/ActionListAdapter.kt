@@ -6,14 +6,14 @@
  * Written by Panov Vitaly 27 Jun 2025
  */
 
-package ru.samsmu.app.core.fragments
+package ru.samsmu.app.core.adapters
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
-import ru.samsmu.app.core.ReloadableAdapter
+import ru.samsmu.app.core.fragments.SelectableItem
 
 abstract class ActionListAdapter<T: SelectableItem>(
     resourceId : Int

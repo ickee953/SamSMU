@@ -17,7 +17,7 @@ import coil.request.CachePolicy
 import ru.samsmu.app.R
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
-import ru.samsmu.app.core.FragmentFavouriteCheckedProvider
+import ru.samsmu.app.core.providers.FragmentFavouriteCheckedProvider
 
 class UserDetailsFragment : Fragment() {
 

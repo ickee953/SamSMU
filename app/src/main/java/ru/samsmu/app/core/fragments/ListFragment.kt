@@ -13,9 +13,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
-import ru.samsmu.app.core.ReloadableAdapter
-import ru.samsmu.app.core.SearchableFilterProvider
-import ru.samsmu.app.core.SearchableFilterProviderImp
+import ru.samsmu.app.core.adapters.ReloadableAdapter
+import ru.samsmu.app.core.adapters.ListAdaptable
+import ru.samsmu.app.core.providers.SearchableFilterProvider
+import ru.samsmu.app.core.providers.SearchableFilterProviderImp
 import ru.samsmu.app.data.model.User
 
 abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdaptable<T>, Fetchable<T>, Searchable {

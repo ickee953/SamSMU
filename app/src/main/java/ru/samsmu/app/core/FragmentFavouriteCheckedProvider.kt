@@ -14,8 +14,8 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import ru.samsmu.app.core.fragments.ActionListFragment
 import ru.samsmu.app.data.Status
-import ru.samsmu.app.ui.favourite.FavouriteFragment
 
 open class FragmentFavouriteCheckedProvider<T>(
     private val fragment: Fragment,
@@ -27,8 +27,8 @@ open class FragmentFavouriteCheckedProvider<T>(
             if(isChecked) {
                 addToFavourites( itemObject, { result ->
                     fragment.setFragmentResult(
-                        FavouriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                        bundleOf(FavouriteFragment.ARG_USER to result)
+                        ActionListFragment.ARG_ITEM_LIST_CHANGED,
+                        bundleOf(ActionListFragment.ARG_ITEM to result)
                     )
 
                     view.isEnabled = true
@@ -44,8 +44,8 @@ open class FragmentFavouriteCheckedProvider<T>(
             } else {
                 removeFromFavourites( itemObject, { result ->
                     fragment.setFragmentResult(
-                        FavouriteFragment.ARG_FAVOURITE_LIST_CHANGED,
-                        bundleOf(FavouriteFragment.ARG_USER to result)
+                        ActionListFragment.ARG_ITEM_LIST_CHANGED,
+                        bundleOf(ActionListFragment.ARG_ITEM to result)
                     )
 
                     view.isEnabled = true

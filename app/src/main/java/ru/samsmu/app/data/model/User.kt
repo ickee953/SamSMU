@@ -18,6 +18,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import ru.samsmu.app.core.fragments.SelectableItem
 
 /**
  *
@@ -39,7 +40,7 @@ data class User(
     @SerializedName("address") @ColumnInfo(name = "address") var address: Address?,
     var isFavourite: Int = 0,
     @SerializedName("age") @ColumnInfo(name = "age") var age: Int = -1,
-) : Parcelable {
+) : Parcelable, SelectableItem {
 
     constructor(parcel : Parcel) : this(
         parcel.readLong(),
@@ -69,6 +70,10 @@ data class User(
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun getSelectionId(): Long {
+        return id
     }
 
     override fun equals(other: Any?): Boolean {

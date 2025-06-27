@@ -67,8 +67,8 @@ abstract class ReloadableAdapter<T>(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun update(items : List<T>){
-        this.items = items.toMutableList()
+    fun update(items : Collection<T>){
+        this.items = ArrayList(items)
         notifyDataSetChanged()
     }
 }

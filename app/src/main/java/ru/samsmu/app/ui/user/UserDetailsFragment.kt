@@ -156,7 +156,7 @@ class UserDetailsFragment : Fragment() {
         binding.phone.text   = "${user.phone}"
         binding.address.text = "${user.address}"
 
-        binding.favouriteBtn.isChecked = user.isFavourite == 1
+        //binding.favouriteBtn.isChecked = user.isFavourite == 1
 
         val imageLoader = ImageLoader.Builder(requireContext())
             .memoryCachePolicy(CachePolicy.ENABLED)

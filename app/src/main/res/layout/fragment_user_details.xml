@@ -122,7 +122,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <CheckBox
+    <!--<CheckBox
             android:id="@+id/favourite_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,6 +133,6 @@
             app:layout_anchor="@+id/item_detail_scroll_view"
             app:layout_anchorGravity="top|end"
             android:button="@drawable/sl_favourite_24dp"
-            app:buttonTint="@android:color/darker_gray"/>
+            app:buttonTint="@android:color/darker_gray"/>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

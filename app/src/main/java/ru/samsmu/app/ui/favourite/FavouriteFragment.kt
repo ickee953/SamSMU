@@ -9,7 +9,6 @@
 package ru.samsmu.app.ui.favourite
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,11 +29,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.databinding.FragmentFavouriteBinding
 import ru.samsmu.app.R
-import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.core.adapters.ActionListAdapter
 import ru.samsmu.app.core.fragments.ActionListFragment
+import ru.samsmu.app.core.providers.FavourableCallbackProviderImpl
+import ru.samsmu.app.core.providers.FavouritableLiveDataProvider
 import ru.samsmu.app.core.showConfirmDialog
-import ru.samsmu.app.ui.menu.MainMenuProvider
 
 class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
 
@@ -47,6 +46,7 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //todo move actionModeCallback to single class file
         actionModeCallback = object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
                 mode.menuInflater.inflate(R.menu.favourite_list_action_menu, menu)
@@ -71,12 +71,19 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
                             tracker?.selection?.forEach { userId ->
                                 val user = listAdapter.getDataset().find { it.id == userId }
                                 if (user != null) {
-                                    (viewModel as UserViewModel).removeFavourite(user)
-                                        .observe(viewLifecycleOwner) { res ->
-                                            if (res.status == Status.SUCCESS) {
-                                                listAdapter.remove(user)
-                                            }
+
+                                    if(viewModel is FavouritableLiveDataProvider<*>){
+                                        //todo unchecked cast
+                                        val favouriteCallbackProvider
+                                            = FavourableCallbackProviderImpl(
+                                                this@FavouriteFragment,
+                                                viewModel as FavouritableLiveDataProvider<User>
+                                        )
+
+                                        favouriteCallbackProvider.removeFromFavourites(user){
+                                            removeListItem(user)
                                         }
+                                    }
                                 }
                             }
                             mode.finish()

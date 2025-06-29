@@ -41,6 +41,11 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
         const val ARG_LIST = "users_list"
     }
 
+    protected fun removeListItem( item : T ) {
+        listAdapter.remove(item)
+        list = listAdapter.getDataset()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

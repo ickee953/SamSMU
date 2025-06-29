@@ -14,9 +14,11 @@ import android.view.MenuItem
 import androidx.core.view.MenuProvider
 import ru.samsmu.app.R
 
-abstract class DetailsMenuProvider : MenuProvider, DetailsMenuActions {
+abstract class DetailsMenuProvider(
+    private val menuId: Int
+) : MenuProvider, DetailsMenuActions {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.details_menu, menu)
+        menuInflater.inflate(menuId, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

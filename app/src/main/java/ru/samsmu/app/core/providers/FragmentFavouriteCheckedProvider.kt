@@ -16,24 +16,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import ru.samsmu.app.core.OnCheckedItemListener
 import ru.samsmu.app.core.fragments.ActionListFragment
-import ru.samsmu.app.data.Status
 
 open class FragmentFavouriteCheckedProvider<T>(
     private val fragment: Fragment,
-    private val favouritableLiveData: FavouritableLiveDataProvider<T>
-) : OnCheckedItemListener<T>, FavourableCallbackProvider<T> {
+    favouriteLiveData: FavouritableLiveDataProvider<T>
+) : FavourableCallbackProviderImpl<T>(fragment, favouriteLiveData), OnCheckedItemListener<T> {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCheckedChanged(itemObject: T?, view: View, isChecked: Boolean) {
         if (itemObject != null) {
             if(isChecked) {
-                addToFavourites( itemObject, { result ->
+                addToFavourites( itemObject, success = { result ->
                     fragment.setFragmentResult(
                         ActionListFragment.ARG_ITEM_LIST_CHANGED,
                         bundleOf(ActionListFragment.ARG_ITEM to result)
                     )
 
                     view.isEnabled = true
-                },{ message ->
+                }, error = { message ->
                     view.isEnabled = true
 
                     Toast.makeText(
@@ -41,16 +40,16 @@ open class FragmentFavouriteCheckedProvider<T>(
                         message,
                         Toast.LENGTH_LONG
                     ).show()
-                },{ view.isEnabled = false })
+                }, loading = { view.isEnabled = false })
             } else {
-                removeFromFavourites( itemObject, { result ->
+                removeFromFavourites( itemObject, success = { result ->
                     fragment.setFragmentResult(
                         ActionListFragment.ARG_ITEM_LIST_CHANGED,
                         bundleOf(ActionListFragment.ARG_ITEM to result)
                     )
 
                     view.isEnabled = true
-                }, { message ->
+                }, error = { message ->
                     view.isEnabled = true
 
                     Toast.makeText(
@@ -58,49 +57,7 @@ open class FragmentFavouriteCheckedProvider<T>(
                         message,
                         Toast.LENGTH_LONG
                     ).show()
-                }, { view.isEnabled = false } )
-            }
-        }
-    }
-
-    override fun addToFavourites(
-        itemObject: T,
-        success: (T) -> Unit,
-        error: (String?) -> Unit,
-        loading: () -> Unit
-    ){
-        favouritableLiveData.addFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
-            res?.let {
-                when(it.status){
-                    Status.SUCCESS -> {
-                        val ret = it.data
-                        if( ret != null ) success(it.data)
-                        else error("Returned object is null")
-                    }
-                    Status.ERROR -> { error(it.message) }
-                    Status.LOADING -> { loading() }
-                }
-            }
-        }
-    }
-
-    override fun removeFromFavourites(
-        itemObject: T,
-        success: (T) -> Unit,
-        error: (String?) -> Unit,
-        loading: () -> Unit
-    ){
-        favouritableLiveData.removeFavourite(itemObject).observe(fragment.viewLifecycleOwner){ res->
-            res?.let {
-                when(it.status){
-                    Status.SUCCESS -> {
-                        val ret = it.data
-                        if( ret != null ) success(it.data)
-                        else error("Returned object is null")
-                    }
-                    Status.ERROR -> { error(it.message) }
-                    Status.LOADING -> { loading() }
-                }
+                }, loading = { view.isEnabled = false } )
             }
         }
     }

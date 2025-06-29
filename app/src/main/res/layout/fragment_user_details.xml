@@ -46,19 +46,18 @@
                         android:textSize="@dimen/details_title_text_size"
                         android:textStyle="bold"/>-->
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin"
                         android:layout_marginStart="@dimen/content_margin"
-                        android:lines="1"/>
+                        android:lines="1"/>-->
 
                     <TextView
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/age"
                         android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginStart="@dimen/content_margin"
                         android:lines="1"/>

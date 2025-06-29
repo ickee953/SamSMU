@@ -12,15 +12,15 @@ interface FavourableCallbackProvider<T> {
 
     fun addToFavourites(
         itemObject: T,
-        success: (T) -> Unit,
-        error: (String?) -> Unit,
-        loading: () -> Unit
+        error: (String?) -> Unit = {},
+        loading: () -> Unit = {},
+        success: (T) -> Unit
     )
 
     fun removeFromFavourites(
         itemObject: T,
-        success: (T) -> Unit,
-        error: (String?) -> Unit,
-        loading: () -> Unit
+        error: (String?) -> Unit = {},
+        loading: () -> Unit = {},
+        success: (T) -> Unit
     )
 }

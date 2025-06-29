@@ -11,6 +11,8 @@ package ru.samsmu.app.ui.user
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -24,6 +26,8 @@ import coil.ImageLoader
 import coil.load
 import coil.request.CachePolicy
 import ru.samsmu.app.R
+import ru.samsmu.app.core.providers.FavourableCallbackProvider
+import ru.samsmu.app.core.providers.FavourableCallbackProviderImpl
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUserDetailsBinding
 import ru.samsmu.app.ui.menu.DetailsMenuProvider
@@ -37,12 +41,42 @@ class UserDetailsFragment : Fragment() {
 
     private lateinit var userViewModel : UserViewModel
 
+    private lateinit var favouriteCallbackProvider: FavourableCallbackProvider<User>
+
     private var user: User? = null
 
-    private val detailsMenuProvider = object : DetailsMenuProvider(){
+    private val detailsMenuProvider = object : DetailsMenuProvider(R.menu.details_menu){
+        @SuppressLint("UseCompatLoadingForDrawables")
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            super.onCreateMenu(menu, menuInflater)
+            user?.let {
+                val menuItem = menu.findItem(R.id.action_favourite)
+
+                if(user!!.isFavourite == 1){
+                    menuItem.icon = resources.getDrawable(R.drawable.baseline_star_24, null)
+                } else {
+                    menuItem.icon = resources.getDrawable(R.drawable.baseline_star_outline_24, null)
+                }
+            }
+
+        }
+
         override fun actionMenuFavourite(){
-            Toast.makeText(requireContext(), R.string.added_to_favourites, Toast.LENGTH_LONG).show()
-            //Toast.makeText(requireContext(), R.string.removed_from_favourites, Toast.LENGTH_LONG).show()
+            user?.let { u->
+                if(u.isFavourite == 1){
+                    favouriteCallbackProvider.removeFromFavourites(u) {
+                        u.isFavourite = 0
+                        requireActivity().invalidateMenu()
+                        Toast.makeText(requireContext(), R.string.removed_from_favourites, Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    favouriteCallbackProvider.addToFavourites(u) {
+                        u.isFavourite = 1
+                        requireActivity().invalidateMenu()
+                        Toast.makeText(requireContext(), R.string.added_to_favourites, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 
@@ -51,6 +85,8 @@ class UserDetailsFragment : Fragment() {
         setHasOptionsMenu(false)
 
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+
+        favouriteCallbackProvider = FavourableCallbackProviderImpl(this, userViewModel)
 
         arguments?.let {
             if(it.containsKey(ARG_USER)){
@@ -70,21 +106,6 @@ class UserDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
-
-        /*user?.let {
-
-            val fragmentFavouriteCheckedProvider = FragmentFavouriteCheckedProvider(this, userViewModel)
-
-            binding.favouriteBtn.setOnClickListener { view ->
-
-                if(it.isFavourite == 1){
-                    fragmentFavouriteCheckedProvider.onCheckedChanged(user, view, false)
-                } else {
-                    fragmentFavouriteCheckedProvider.onCheckedChanged(user, view,true)
-                }
-
-            }
-        }*/
 
         return binding.root
     }
@@ -149,14 +170,15 @@ class UserDetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(user: User){
-        val title = "${user.firstName} ${user.lastName} ${user.maidenName}"
+        val title   = "${user.firstName} ${user.lastName} ${user.maidenName}"
+        val age     = "${resources.getString(R.string.age)}: ${user.age}"
+
         (activity as AppCompatActivity).supportActionBar?.title = title
+        (activity as AppCompatActivity).supportActionBar?.subtitle = age
+
         binding.email.text   = "${user.email}"
-        binding.age.text     = "${resources.getString(R.string.age)}: ${user.age}"
         binding.phone.text   = "${user.phone}"
         binding.address.text = "${user.address}"
-
-        //binding.favouriteBtn.isChecked = user.isFavourite == 1
 
         val imageLoader = ImageLoader.Builder(requireContext())
             .memoryCachePolicy(CachePolicy.ENABLED)

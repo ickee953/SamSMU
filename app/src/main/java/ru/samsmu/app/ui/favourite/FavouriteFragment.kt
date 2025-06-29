@@ -44,15 +44,6 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
     // onDestroyView.
     private val binding get() = _binding!!
 
-    /*private val mainMenuProvider = object : MainMenuProvider(){
-        override fun actionMenuSettings() {
-            //start settings activity
-            val intent = Intent(requireActivity(), SettingsActivity::class.java)
-
-            startActivity(intent)
-        }
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

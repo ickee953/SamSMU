@@ -8,6 +8,6 @@
     <dimen name="user_image_details_width">150dp</dimen>
     <dimen name="status_bar_height">25dp</dimen>
     <dimen name="details_title_text_size">24dp</dimen>
-    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="app_bar_height">350dp</dimen>
     <dimen name="card_corner_radius">30dp</dimen>
 </resources>

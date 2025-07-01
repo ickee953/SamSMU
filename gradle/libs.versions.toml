@@ -21,6 +21,7 @@ roomKtx = "2.7.1"
 roomVersion = "2.7.1"
 kspVersion = "2.0.21-1.0.27"
 recyclerviewSelection = "1.2.0"
+collapsingToolbarSubtitleVersion = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +44,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 androidx-recyclerview-selection = { group = "androidx.recyclerview", name = "recyclerview-selection", version.ref = "recyclerviewSelection" }
+com-hendraanggrian-material-collapsingtoolbarlayout-subtitle = { group = "com.hendraanggrian.material", name = "collapsingtoolbarlayout-subtitle", version.ref = "collapsingToolbarSubtitleVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

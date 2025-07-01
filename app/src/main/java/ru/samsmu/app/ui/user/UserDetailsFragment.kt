@@ -173,8 +173,8 @@ class UserDetailsFragment : Fragment() {
         val title   = "${user.firstName} ${user.lastName} ${user.maidenName}"
         val age     = "${resources.getString(R.string.age)}: ${user.age}"
 
-        (activity as AppCompatActivity).supportActionBar?.title = title
-        (activity as AppCompatActivity).supportActionBar?.subtitle = age
+        binding.collapsingToolbar.title = title
+        binding.collapsingToolbar.subtitle = age
 
         binding.email.text   = "${user.email}"
         binding.phone.text   = "${user.phone}"

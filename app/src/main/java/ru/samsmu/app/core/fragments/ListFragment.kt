@@ -10,6 +10,7 @@ package ru.samsmu.app.core.fragments
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -61,6 +62,16 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
                 setDataset(list!!)
             }
         }
+
+	    setFragmentResultListener(ActionListFragment.ARG_ITEM_LIST_CHANGED) { _, _->
+            fetch({ items ->
+                list = items
+                listAdapter.reload(items as ArrayList)
+            }, { message ->
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            })
+        }
+
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

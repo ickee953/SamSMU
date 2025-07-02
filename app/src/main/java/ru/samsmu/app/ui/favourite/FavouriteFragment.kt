@@ -12,6 +12,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.content.Intent
 import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
@@ -27,6 +28,7 @@ import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.user.UserDetailsFragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.databinding.FragmentFavouriteBinding
 import ru.samsmu.app.R
 import ru.samsmu.app.core.adapters.ActionListAdapter
@@ -34,6 +36,7 @@ import ru.samsmu.app.core.fragments.ActionListFragment
 import ru.samsmu.app.core.providers.FavourableCallbackProviderImpl
 import ru.samsmu.app.core.providers.FavouritableLiveDataProvider
 import ru.samsmu.app.core.showConfirmDialog
+import ru.samsmu.app.ui.menu.MainMenuProvider
 
 class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
 
@@ -42,6 +45,14 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val mainMenuProvider = object : MainMenuProvider(){
+        override fun actionMenuSettings() {
+            //start settings activity
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,8 +126,6 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
 
         binding.recyclerListView.adapter = listAdapter
 
-        //requireActivity().addMenuProvider(mainMenuProvider)
-
         return root
     }
 
@@ -165,9 +174,17 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
         applySearchFilter()
     }
 
-    override fun onDestroyView() {
-        //requireActivity().removeMenuProvider(mainMenuProvider)
+    override fun onResume(){
+        super.onResume()
+        requireActivity().addMenuProvider(mainMenuProvider)
+    }
 
+    override fun onPause(){
+        requireActivity().removeMenuProvider(mainMenuProvider)
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }

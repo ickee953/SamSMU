@@ -11,6 +11,7 @@ package ru.samsmu.app.ui.user
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
@@ -26,6 +28,7 @@ import ru.samsmu.app.R
 import ru.samsmu.app.core.providers.FragmentFavouriteCheckedProvider
 import ru.samsmu.app.core.adapters.ReloadableAdapter
 import ru.samsmu.app.core.fragments.ListFragment
+import ru.samsmu.app.ui.menu.MainMenuProvider
 
 class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
 
@@ -34,6 +37,14 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val mainMenuProvider = object : MainMenuProvider(){
+        override fun actionMenuSettings() {
+            //start settings activity
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +78,16 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
             }
         })
         applySearchFilter()
+    }
+
+    override fun onResume(){
+        super.onResume()
+        requireActivity().addMenuProvider(mainMenuProvider)
+    }
+
+    override fun onPause(){
+        requireActivity().removeMenuProvider(mainMenuProvider)
+        super.onPause()
     }
 
     override fun onDestroyView() {

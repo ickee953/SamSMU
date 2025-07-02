@@ -133,26 +133,21 @@ class UserDetailsFragment : Fragment() {
         setupActionBar()
 
         user?.let { updateUI(it) }
+    }
 
-        with(requireActivity()){
-            if( this is MenuProvided ){
-                val mainMenuProvider = (this as MenuProvided).getMenuProvider()
-                removeMenuProvider(mainMenuProvider)
-            }
-            addMenuProvider(detailsMenuProvider)
-        }
+    override fun onResume(){
+        super.onResume()
+        requireActivity().addMenuProvider(detailsMenuProvider)
+    }
+
+    override fun onPause(){
+        requireActivity().removeMenuProvider(detailsMenuProvider)
+        super.onPause()
     }
 
     override fun onDestroyView() {
-        with(requireActivity()){
-            removeMenuProvider(detailsMenuProvider)
-            if( this is MenuProvided ){
-                val mainMenuProvider = (this as MenuProvided).getMenuProvider()
-                addMenuProvider(mainMenuProvider)
-            }
-        }
-
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -191,6 +186,8 @@ class UserDetailsFragment : Fragment() {
         } else {
             binding.imageView.visibility = View.GONE
         }
+
+        requireActivity().invalidateMenu()
     }
 
 }

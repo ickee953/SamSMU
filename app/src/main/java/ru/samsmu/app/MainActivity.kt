@@ -22,7 +22,7 @@ import androidx.navigation.ui.navigateUp
 import ru.samsmu.app.ui.menu.MainMenuProvider
 import ru.samsmu.app.ui.menu.MenuProvided
 
-class MainActivity : AppCompatActivity(), MenuProvided {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -31,19 +31,6 @@ class MainActivity : AppCompatActivity(), MenuProvided {
     private lateinit var navController: NavController
 
     private lateinit var navHostFragment: NavHostFragment
-
-    private val mainMenuProvider = object : MainMenuProvider(){
-        override fun actionMenuSettings() {
-            //start settings activity
-            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-
-            startActivity(intent)
-        }
-    }
-
-    override fun getMenuProvider(): MenuProvider {
-        return mainMenuProvider
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +50,6 @@ class MainActivity : AppCompatActivity(), MenuProvided {
         )
 
         binding.navView.setupWithNavController(navController)
-
-        addMenuProvider(mainMenuProvider)
     }
 
     override fun onSupportNavigateUp(): Boolean {

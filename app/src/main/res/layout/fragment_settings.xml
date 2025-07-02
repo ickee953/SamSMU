@@ -47,93 +47,149 @@
                     android:layout_marginBottom="@dimen/content_margin"
                     android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginStart="@dimen/content_margin"
                         android:layout_marginEnd="@dimen/content_margin"
                         android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_1"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_1">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:layout_marginEnd="@dimen/content_margin"
-                        android:layout_marginTop="@dimen/content_margin_min"
-                        android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_2"/>
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:layout_marginEnd="@dimen/content_margin"
-                        android:layout_marginTop="@dimen/content_margin_min"
-                        android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_3"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginStart="@dimen/content_margin"
                         android:layout_marginEnd="@dimen/content_margin"
                         android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_4"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_2">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:layout_marginEnd="@dimen/content_margin"
-                        android:layout_marginTop="@dimen/content_margin_min"
-                        android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_5"/>
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:layout_marginEnd="@dimen/content_margin"
-                        android:layout_marginTop="@dimen/content_margin_min"
-                        android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_6"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginStart="@dimen/content_margin"
                         android:layout_marginEnd="@dimen/content_margin"
                         android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginBottom="@dimen/content_margin_min"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_7"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_3">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/auto_complete_sensor_8"
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginStart="@dimen/content_margin"
                         android:layout_marginEnd="@dimen/content_margin"
                         android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginBottom="@dimen/content_margin_min"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown"
-                        android:hint="@string/sensor_8" />
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_4">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:layout_marginEnd="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginBottom="@dimen/content_margin_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_5">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:layout_marginEnd="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginBottom="@dimen/content_margin_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_6">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:layout_marginEnd="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginBottom="@dimen/content_margin_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_7">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:layout_marginEnd="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_margin_min"
+                        android:layout_marginBottom="@dimen/content_margin_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:hint="@string/sensor_8">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_complete_sensor_8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 

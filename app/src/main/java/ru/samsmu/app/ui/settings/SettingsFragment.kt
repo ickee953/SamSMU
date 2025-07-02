@@ -51,7 +51,7 @@ class SettingsFragment : Fragment() {
         binding.autoCompleteSensor8.setAdapter(adapter)
 
         binding.saveBtn.setOnClickListener {
-            /*val text =  "Sensor 1: ${binding.autoCompleteSensor1.text}\n" +
+            val text =  "Sensor 1: ${binding.autoCompleteSensor1.text}\n" +
                         "Sensor 2: ${binding.autoCompleteSensor2.text}\n" +
                         "Sensor 3: ${binding.autoCompleteSensor3.text}\n" +
                         "Sensor 4: ${binding.autoCompleteSensor4.text}\n" +
@@ -60,7 +60,7 @@ class SettingsFragment : Fragment() {
                         "Sensor 7: ${binding.autoCompleteSensor7.text}\n" +
                         "Sensor 8: ${binding.autoCompleteSensor8.text}\n"
 
-            Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()*/
+            Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
         }
     }
 

@@ -60,18 +60,20 @@ class UserViewModel(application: Application) : AndroidViewModel(application),
     fun getFavorites() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
         val favorites = userDao.favorites()
-        favorites.forEach { user->
+        /*favorites.forEach { user->
             user.isFavourite = 1
-        }
+        }*/
         emit(Resource.success(data = favorites))
     }
 
     override fun addFavourite(itemObject: User ) = liveData (Dispatchers.IO) {
+        itemObject.isFavourite = 1
         userDao.create(itemObject)
         emit(Resource.success(data = itemObject))
     }
 
     override fun removeFavourite(itemObject: User ) = liveData (Dispatchers.IO) {
+        itemObject.isFavourite = 0
         userDao.delete(itemObject)
         emit(Resource.success(data = itemObject))
     }

@@ -67,6 +67,7 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
             fetch({ items ->
                 list = items
                 listAdapter.reload(items as ArrayList)
+                applySearchFilter()
             }, { message ->
                 Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
             })

@@ -2,25 +2,28 @@
     <!-- Base application theme. -->
     <style name="Theme.SamsmuApp" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="actionBarTheme">@style/Theme.SamsmuApp.ActionBar</item>
         <item name="actionModeCloseDrawable">@drawable/baseline_close_24</item>
     </style>
 
     <style name="textViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">28sp</item>
         <item name="android:layout_margin">@dimen/content_margin</item>
+    </style>
+
+    <style name="Theme.SamsmuApp.ActionBar" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorSurface">@color/action_bar_background</item>
+        <item name="colorSecondary">?attr/colorSurface</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
 </resources>

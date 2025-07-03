@@ -6,7 +6,6 @@
     <dimen name="content_margin_min">8dp</dimen>
     <dimen name="item_image_width">70dp</dimen>
     <dimen name="user_image_details_width">150dp</dimen>
-    <!--<dimen name="status_bar_height">25dp</dimen>-->
     <dimen name="details_title_text_size">24dp</dimen>
     <dimen name="app_bar_height">350dp</dimen>
     <dimen name="card_corner_radius">30dp</dimen>

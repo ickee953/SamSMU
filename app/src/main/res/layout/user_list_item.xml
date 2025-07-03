@@ -40,6 +40,7 @@
 
         <TextView
             android:id="@+id/name"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin_min"
@@ -67,8 +68,9 @@
     </RelativeLayout>
 
     <!-- just a divider -->
-    <View android:background="@android:color/darker_gray"
+    <View android:background="@color/list_item_divider"
         android:layout_width="fill_parent"
-        android:layout_height="0.2dp" />
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="@dimen/item_image_width"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

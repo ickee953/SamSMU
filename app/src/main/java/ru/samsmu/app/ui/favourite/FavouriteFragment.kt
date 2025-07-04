@@ -19,6 +19,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import ru.samsmu.app.ui.user.UserViewModel
@@ -172,6 +173,11 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
         })
 
         applySearchFilter()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        //always fetch favourite users from local db
+        super.onViewStateRestored(null)
     }
 
     override fun onResume(){

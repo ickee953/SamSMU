@@ -28,10 +28,12 @@ import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.ui.user.UserDetailsFragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.databinding.FragmentFavouriteBinding
 import ru.samsmu.app.R
+import ru.samsmu.app.core.MasterDetailsNavigable
 import ru.samsmu.app.core.adapters.ActionListAdapter
 import ru.samsmu.app.core.fragments.ActionListFragment
 import ru.samsmu.app.core.providers.FavourableCallbackProviderImpl
@@ -39,7 +41,7 @@ import ru.samsmu.app.core.providers.FavouritableLiveDataProvider
 import ru.samsmu.app.core.showConfirmDialog
 import ru.samsmu.app.ui.menu.MainMenuProvider
 
-class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
+class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(), MasterDetailsNavigable {
 
     private var _binding: FragmentFavouriteBinding? = null
 
@@ -146,8 +148,8 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
                 UserDetailsFragment.ARG_USER,
                 user
             )
-            itemView.findNavController()
-                .navigate(R.id.show_user_details, bundle)
+
+            showDetails(bundle)
         }
     }
 
@@ -209,5 +211,14 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(){
                 }
             }
         }
+    }
+
+    override fun showDetails( bundle: Bundle ){
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        navController.navigate(R.id.show_user_details, bundle)
     }
 }

@@ -18,19 +18,20 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import ru.samsmu.app.SettingsActivity
 import ru.samsmu.app.data.Status
 import ru.samsmu.app.data.model.User
 import ru.samsmu.app.databinding.FragmentUsersBinding
 import ru.samsmu.app.R
+import ru.samsmu.app.core.MasterDetailsNavigable
 import ru.samsmu.app.core.providers.FragmentFavouriteCheckedProvider
 import ru.samsmu.app.core.adapters.ReloadableAdapter
 import ru.samsmu.app.core.fragments.ListFragment
 import ru.samsmu.app.ui.menu.MainMenuProvider
 
-class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
+class UsersFragment : ListFragment<User, ReloadableAdapter<User>>(), MasterDetailsNavigable {
 
     private var _binding: FragmentUsersBinding? = null
 
@@ -127,8 +128,7 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
                 UserDetailsFragment.ARG_USER,
                 user
             )
-            itemView.findNavController()
-                .navigate(R.id.show_user_details, bundle)
+            showDetails(bundle)
         }, object : FragmentFavouriteCheckedProvider<User>(this, viewModel as UserViewModel) {
             override fun onCheckedChanged(itemObject: User?, view: View, isChecked: Boolean) {
                 super.onCheckedChanged(itemObject, view, isChecked)
@@ -145,5 +145,14 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>() {
 
     override fun createViewModel(): AndroidViewModel {
         return ViewModelProvider(this)[UserViewModel::class.java]
+    }
+
+    override fun showDetails( bundle : Bundle ){
+        val navHostFragment =
+            (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        navController.navigate(R.id.show_user_details, bundle)
     }
 }

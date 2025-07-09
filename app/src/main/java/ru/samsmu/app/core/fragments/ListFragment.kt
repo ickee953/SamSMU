@@ -64,13 +64,7 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
         }
 
 	    setFragmentResultListener(ActionListFragment.ARG_ITEM_LIST_CHANGED) { _, _->
-            fetch({ items ->
-                list = items
-                listAdapter.reload(items as ArrayList)
-                applySearchFilter()
-            }, { message ->
-                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-            })
+            fetch()
         }
 
     }
@@ -85,14 +79,18 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
                 applySearchFilter()
             }
         } else {
-            fetch({ items ->
-                list =  items
-                reloadDataset(list!!)
-                applySearchFilter()
-            }, { message ->
-                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-            })
+            fetch()
         }
+    }
+
+    protected fun fetch(){
+        fetch({ items ->
+            list =  items
+            reloadDataset(list!!)
+            applySearchFilter()
+        }, { message ->
+            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

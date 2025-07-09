@@ -79,6 +79,10 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>(), MasterDetai
             }
         })
         applySearchFilter()
+
+        binding.pullToRefresh.setOnRefreshListener {
+            fetch()
+        }
     }
 
     override fun onResume(){
@@ -104,9 +108,18 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>(), MasterDetai
         (viewModel as UserViewModel).getUsers().observe(viewLifecycleOwner){ resource ->
             resource.let {
                 when(it.status) {
-                    Status.SUCCESS -> success(it.data!!)
-                    Status.ERROR -> error(it.message)
-                    Status.LOADING -> loading()
+                    Status.SUCCESS -> {
+                        success(it.data!!)
+                        binding.pullToRefresh.isRefreshing = false
+                    }
+                    Status.ERROR -> {
+                        error(it.message)
+                        binding.pullToRefresh.isRefreshing = false
+                    }
+                    Status.LOADING -> {
+                        loading()
+                        binding.pullToRefresh.isRefreshing = true
+                    }
                 }
             }
         }

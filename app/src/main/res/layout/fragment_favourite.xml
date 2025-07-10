@@ -22,6 +22,10 @@
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/user_list_item" />
 
+    <include
+        android:id="@+id/info"
+        layout="@layout/informable_layout" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"

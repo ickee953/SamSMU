@@ -83,6 +83,10 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>(), MasterDetai
         binding.pullToRefresh.setOnRefreshListener {
             fetch()
         }
+
+        binding.info.reloadBtn.setOnClickListener {
+            fetch()
+        }
     }
 
     override fun onResume(){
@@ -167,5 +171,25 @@ class UsersFragment : ListFragment<User, ReloadableAdapter<User>>(), MasterDetai
         val navController = navHostFragment.navController
 
         navController.navigate(R.id.show_user_details, bundle)
+    }
+
+    override fun showEmptyListInfoView(){
+        binding.info.emptyView.visibility = View.VISIBLE
+        binding.info.errorView.visibility = View.GONE
+        binding.recyclerListView.visibility = View.GONE
+    }
+
+    override fun showErrorInfoView(message : String){
+        binding.info.emptyView.visibility = View.GONE
+        binding.info.errorView.visibility = View.VISIBLE
+        binding.recyclerListView.visibility = View.GONE
+
+        binding.info.errorMessage.text = message
+    }
+
+    override fun showListView(){
+        binding.info.emptyView.visibility = View.GONE
+        binding.info.errorView.visibility = View.GONE
+        binding.recyclerListView.visibility = View.VISIBLE
     }
 }

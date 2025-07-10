@@ -96,6 +96,7 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(), M
 
                                         favouriteCallbackProvider.removeFromFavourites(user){
                                             removeListItem(user)
+                                            if(list?.size == 0) showEmptyListInfoView()
                                         }
                                     }
                                 }
@@ -220,5 +221,15 @@ class FavouriteFragment : ActionListFragment<User, ActionListAdapter<User>>(), M
         val navController = navHostFragment.navController
 
         navController.navigate(R.id.show_user_details, bundle)
+    }
+
+    override fun showEmptyListInfoView(){
+        binding.info.emptyView.visibility = View.VISIBLE
+        binding.recyclerListView.visibility = View.GONE
+    }
+
+    override fun showListView(){
+        binding.info.emptyView.visibility = View.GONE
+        binding.recyclerListView.visibility = View.VISIBLE
     }
 }

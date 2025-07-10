@@ -20,7 +20,7 @@ import ru.samsmu.app.core.providers.SearchableFilterProvider
 import ru.samsmu.app.core.providers.SearchableFilterProviderImp
 import ru.samsmu.app.data.model.User
 
-abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdaptable<T>, Fetchable<T>, Searchable {
+abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdaptable<T>, Fetchable<T>, Searchable, InformableListView {
 
     abstract fun applySearchFilter()
 
@@ -86,10 +86,20 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
     protected fun fetch(){
         fetch({ items ->
             list =  items
-            reloadDataset(list!!)
-            applySearchFilter()
+
+            if(list == null || list!!.size == 0) {
+                showEmptyListInfoView()
+            } else {
+                reloadDataset(list!!)
+                applySearchFilter()
+                showListView()
+            }
         }, { message ->
-            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            if(list == null || list!!.size == 0){
+                showErrorInfoView(message!!)
+            } else {
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+            }
         })
     }
 
@@ -116,5 +126,17 @@ abstract class ListFragment<T, A : ReloadableAdapter<T>> : Fragment(), ListAdapt
 
     override fun setDataset(dataset: Collection<T>) {
         listAdapter.setDataset(dataset)
+    }
+
+    override fun showEmptyListInfoView(){
+
+    }
+
+    override fun showErrorInfoView(message : String){
+
+    }
+
+    override fun showListView(){
+
     }
 }

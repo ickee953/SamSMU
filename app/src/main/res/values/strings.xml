@@ -42,4 +42,6 @@
     <string name="added_to_favourites">Добавлено в избранное</string>
     <string name="removed_from_favourites">Удалено из избранных</string>
     <string name="action_favourite">Добавить в избранное</string>
+    <string name="empty_list">List is empty</string>
+    <string name="try_again">Try Again</string>
 </resources>

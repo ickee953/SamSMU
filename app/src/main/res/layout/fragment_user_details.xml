@@ -82,7 +82,11 @@
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbar"
+            app:collapsedSubtitleTextColor="@android:color/white"
+            app:expandedSubtitleTextColor="@android:color/white"
+            app:collapsedTitleTextColor="@android:color/white"
+            app:expandedTitleTextColor="@android:color/white">
 
             <ImageView
                 android:id="@+id/image_view"
@@ -91,6 +95,11 @@
                 android:background="@color/white"
                 android:scaleType="centerCrop"
                 android:src="@drawable/baseline_person_24" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_image_overlay"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

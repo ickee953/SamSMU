@@ -1,1 +1,2 @@
-![screens](https://github.com/user-attachments/assets/2d628592-6925-4a99-ba7d-cd8cb3c3c9e7)
+
+<img width="1280" height="720" alt="samsmu_app" src="https://github.com/user-attachments/assets/5fdb268e-5781-4b66-bcc4-34c83752f154" />
